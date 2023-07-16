@@ -1,0 +1,31 @@
+{
+  "$id": "https://hiperium.cloud/task-event-schema.json",
+  "title": "EventBridgeCustomEvent",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string"
+    },
+    "detailType": {
+      "type": "string"
+    },
+    "detail": {
+      "title": "TaskEventDetail",
+      "type": "object",
+      "properties": {
+        "taskId": {
+          "type": "integer"
+        },
+        "deviceId": {
+          "type": "string",
+          "format": "integer"
+        },
+        "deviceOperation": {
+          "type": "string"
+        }
+      },
+      "required": [ "taskId", "deviceId", "deviceOperation" ]
+    }
+  },
+  "required": [ "source", "detailType", "detail" ]
+}

@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for the City Tasks Events project.
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 512
+
+Resources:
+  CityTasksEventsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./src/city-tasks-events
+      Handler: com.hiperium.city.tasks.events.ApplicationHandler::handleRequest
+      Runtime: java17
+      Architectures:
+        - arm64
+      Environment:
+        Variables:
+          POWERTOOLS_LOG_LEVEL: DEBUG
+      Events:
+        TaskExecutionTrigger:
+          Type: EventBridgeRule # More info about EventBridgeRule EventBridgeCustomEvent Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#eventbridgerule
+          Properties:
+            Pattern:
+              source:
+                - com.hiperium.city.tasks
+              detail-type:
+                - TaskExecution
+
+  LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${CityTasksEventsFunction}"
+      RetentionInDays: 7
+
+Outputs:
+  CityTasksEventsFunction:
+    Description: "CityTasksEvents Lambda Function ARN."
+    Value: !GetAtt CityTasksEventsFunction.Arn
+  CityTasksEventsFunctionIamRole:
+    Description: "Implicit IAM Role created for the CityTasksEvents function."
+    Value: !GetAtt CityTasksEventsFunctionRole.Arn

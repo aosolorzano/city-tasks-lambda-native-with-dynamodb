@@ -1,0 +1,16 @@
+{
+  "Changes": [
+    {
+      "Action": "DELETE",
+      "ResourceRecordSet": {
+        "Name": "server-name-fqdn",
+        "Type": "CNAME",
+        "ResourceRecords": [
+          {
+            "Value": "alb-domain-name"
+          }
+        ]
+      }
+    }
+  ]
+}

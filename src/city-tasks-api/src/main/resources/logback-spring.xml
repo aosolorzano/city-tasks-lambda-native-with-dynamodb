@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Appenders -->
+    <appender name="textAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="jsonLogstashAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+    <appender name="jsonLogbackAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                <prettyPrint>true</prettyPrint>
+            </jsonFormatter>
+            <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+        </layout>
+    </appender>
+
+    <springProfile name="dev">
+        <logger name="com.hiperium.city.tasks.api" level="DEBUG" additivity="false">
+            <appender-ref ref="jsonLogbackAppender"/>
+        </logger>
+        <logger name="org.springframework.boot" level="INFO">
+            <appender-ref ref="textAppender" />
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="textAppender" />
+        </root>
+    </springProfile>
+
+    <logger name="logback-json" additivity="false" level="INFO">
+        <appender-ref ref="jsonAppender"/>
+    </logger>
+</configuration>
+
