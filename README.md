@@ -5,7 +5,7 @@
 * **Level**: Advanced.
 * **Technologies**: Java 17, Spring Boot 3, Spring Native, Spring WebFlux, Spring OAuth2, Quartz, Flyway, Lombok, Testcontainers, LocalStack, AWS Copilot CLI, SAM-CLI, Amazon Cognito, Aurora PostgreSQL, DynamoDB, Application Load Balancer, EventBridge, Lambda, and Docker.
 
-![](utils/docs/images/solution_architecture_v4.png)
+![](utils/docs/images/solutions_architecture_v5.png)
 
 You can read the following articles from my **Medium.com** account to get more project details:
 
