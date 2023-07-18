@@ -17,11 +17,16 @@
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <logstash.encoder.version>7.4</logstash.encoder.version>
         <hibernate.enhance.plugin.version>6.2.6.Final</hibernate.enhance.plugin.version>
+        <springdoc.openapi.ui.version>2.1.0</springdoc.openapi.ui.version>
         <native.plugin.version>0.9.23</native.plugin.version>
     </properties>
 
     <dependencies>
         <!-- SPRING BOOT -->
+        <!--dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
@@ -88,9 +93,15 @@
             <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.1.0</version>
+            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+            <version>${springdoc.openapi.ui.version}</version>
         </dependency>
         <!-- LOGGING -->
         <dependency>

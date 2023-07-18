@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.hiperium.city.tasks.api.utils.PathsUtil.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @ActiveProfiles("test")
@@ -34,7 +35,7 @@ class OAuth2Test extends AbstractContainerBaseTest {
         taskOperationDto.setOperation(EnumTaskOperation.CREATE);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .bodyValue(taskOperationDto)
                 .exchange()
@@ -47,7 +48,7 @@ class OAuth2Test extends AbstractContainerBaseTest {
     void givenTasksList_whenFindAllTasks_thenReturnUnauthorized() {
         this.webTestClient
                 .get()
-                .uri(TaskUtil.TASKS_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASKS_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isUnauthorized();

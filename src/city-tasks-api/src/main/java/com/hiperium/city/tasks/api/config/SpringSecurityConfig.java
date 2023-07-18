@@ -18,17 +18,25 @@ public class SpringSecurityConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuerUri;
 
+    @Value("${management.endpoints.web.base-path}")
+    private String actuatorPath;
+
+    @Value("${springdoc.custom.path}")
+    private String openApiPath;
+
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/actuator/**").permitAll()
-                        .anyExchange().authenticated())
+                        .pathMatchers(this.actuatorPath + "/**", this.openApiPath + "/*/**")
+                        .permitAll()
+                        .anyExchange()
+                        .authenticated())
                 .oauth2ResourceServer(resourceServer -> resourceServer.jwt(withDefaults()));
         return http.build();
     }
 
-    // Used for Spring Native compatibility with "WebFluxSecurityConfiguration" component.
+    // Used for Spring Native compatibility with the "WebFluxSecurityConfiguration" component.
     @Bean
     public ReactiveJwtDecoder jwtDecoder() {
         return ReactiveJwtDecoders.fromIssuerLocation(this.issuerUri);

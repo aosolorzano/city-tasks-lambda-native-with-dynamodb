@@ -21,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.hiperium.city.tasks.api.utils.PathsUtil.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @ActiveProfiles("test")
@@ -47,7 +48,7 @@ class TaskControllerExceptionsTest extends AbstractContainerBaseTest {
         taskOperationDto.getTask().setId(201L);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(taskOperationDto)
@@ -69,7 +70,7 @@ class TaskControllerExceptionsTest extends AbstractContainerBaseTest {
         taskOperationDto.getTask().setId(202L);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, EnumLanguageCode.ES.getCode())
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
@@ -92,7 +93,7 @@ class TaskControllerExceptionsTest extends AbstractContainerBaseTest {
         taskOperationDto.getTask().setId(203L);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(taskOperationDto)
@@ -114,7 +115,7 @@ class TaskControllerExceptionsTest extends AbstractContainerBaseTest {
         taskOperationDto.getTask().setId(204L);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, EnumLanguageCode.ES.getCode())
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())

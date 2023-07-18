@@ -19,9 +19,6 @@ import java.util.UUID;
 
 public final class TaskUtil {
 
-    public static final String TASK_PATH = "/api/task";
-    public static final String TASKS_PATH = "/api/tasks";
-
     private static final List<String> DAYS_LIST = Arrays.asList("SUN","MON","TUE","WED","THU","FRI","SAT");
     private static final char[] HEX_ARRAY = "HiperiumTasksService".toCharArray();
     private static final int JOB_ID_LENGTH = 20;

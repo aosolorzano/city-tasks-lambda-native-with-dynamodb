@@ -23,6 +23,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.ZonedDateTime;
 
+import static com.hiperium.city.tasks.api.utils.PathsUtil.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @ActiveProfiles("test")
@@ -250,7 +251,7 @@ class TaskControllerValidationsTest extends AbstractContainerBaseTest {
                                                                                   EnumLanguageCode languageEnum) {
         return this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.ACCEPT_LANGUAGE, languageEnum.getCode())
                 .header(AUTHORIZATION, super.getBearerAccessToken())

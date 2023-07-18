@@ -19,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.hiperium.city.tasks.api.utils.PathsUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -47,7 +48,7 @@ class TaskControllerTest extends AbstractContainerBaseTest {
         taskOperationDto.setOperation(EnumTaskOperation.CREATE);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(taskOperationDto)
@@ -81,7 +82,7 @@ class TaskControllerTest extends AbstractContainerBaseTest {
         taskOperationDto.getTask().setDeviceOperation(EnumDeviceOperation.DEACTIVATE);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(taskOperationDto)
@@ -107,7 +108,7 @@ class TaskControllerTest extends AbstractContainerBaseTest {
         taskOperationDto.setOperation(EnumTaskOperation.DELETE);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(taskOperationDto)
@@ -122,7 +123,7 @@ class TaskControllerTest extends AbstractContainerBaseTest {
         taskOperationDto.setOperation(EnumTaskOperation.DELETE);
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASK_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(taskOperationDto)

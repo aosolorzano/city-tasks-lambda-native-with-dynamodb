@@ -19,12 +19,16 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import java.nio.charset.StandardCharsets;
 
 @EnableWebFlux
+@EnableScheduling
+@EnableWebFluxSecurity
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableConfigurationProperties(AwsPropertiesVO.class)

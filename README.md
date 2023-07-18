@@ -47,6 +47,7 @@ The internal project documentation is divided into the following directories:
 - **docs**: Contains the project's documentation.
 - **docs/images**: Contains solution's architecture images by version.
 
+The following documentation is available:
 - [Tasks API with Copilot CLI](utils/docs/TasksApi.md).
 - [Tasks Event with SAM CLI](utils/docs/TasksEvents.md).
 

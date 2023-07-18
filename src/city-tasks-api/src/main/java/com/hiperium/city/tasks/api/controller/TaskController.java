@@ -7,6 +7,9 @@ import com.hiperium.city.tasks.api.model.Task;
 import com.hiperium.city.tasks.api.service.TaskService;
 import com.hiperium.city.tasks.api.utils.BeanValidationUtil;
 import com.hiperium.city.tasks.api.utils.TaskUtil;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,9 +17,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import static com.hiperium.city.tasks.api.utils.PathsUtil.*;
+
 @Slf4j
 @RestController
-@RequestMapping(TaskUtil.TASK_PATH)
+@RequestMapping(CONTEXT_PATH + API_VERSION_1 + TASK_PATH)
+@Tag(name = "Task", description = "Task management API.")
 public class TaskController {
 
     private final TaskService taskService;
@@ -30,6 +36,8 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "Manage single Task operation like create, update and delete.",
+               description = "Single endpoint to manage create, update and delete operations over single Task object.")
     public Mono<TaskResponseDTO> taskOperation(@RequestBody @Valid TaskOperationDTO operationDto) {
         log.debug("taskOperation() - START: {}", operationDto);
         BeanValidationUtil.validateBean(operationDto.getTask());
@@ -41,6 +49,7 @@ public class TaskController {
         }).map(taskResponse -> TaskMapper.INSTANCE.toResponseDto(taskResponse, this.zoneId));
     }
 
+    @Hidden
     @GetMapping("/template")
     @ResponseStatus(HttpStatus.OK)
     public TaskOperationDTO getTaskOperationTemplate() {

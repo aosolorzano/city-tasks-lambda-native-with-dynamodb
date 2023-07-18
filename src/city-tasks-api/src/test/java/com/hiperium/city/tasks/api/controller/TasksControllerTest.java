@@ -4,7 +4,6 @@ import com.hiperium.city.tasks.api.common.AbstractContainerBaseTest;
 import com.hiperium.city.tasks.api.dto.TaskCriteriaDTO;
 import com.hiperium.city.tasks.api.dto.TaskDTO;
 import com.hiperium.city.tasks.api.model.Task;
-import com.hiperium.city.tasks.api.utils.TaskUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.hiperium.city.tasks.api.utils.PathsUtil.*;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 @ActiveProfiles("test")
@@ -34,7 +34,7 @@ class TasksControllerTest extends AbstractContainerBaseTest {
     void givenTasksList_whenFindAllTasks_thenReturnTasksList() {
         this.webTestClient
                 .get()
-                .uri(TaskUtil.TASKS_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASKS_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .exchange()
@@ -52,7 +52,7 @@ class TasksControllerTest extends AbstractContainerBaseTest {
                 .build();
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASKS_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASKS_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(criteriaDto)
@@ -70,7 +70,7 @@ class TasksControllerTest extends AbstractContainerBaseTest {
                 .build();
         this.webTestClient
                 .post()
-                .uri(TaskUtil.TASKS_PATH)
+                .uri(CONTEXT_PATH + API_VERSION_1 + TASKS_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, super.getBearerAccessToken())
                 .bodyValue(taskCriteriaDto)

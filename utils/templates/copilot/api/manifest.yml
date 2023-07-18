@@ -35,7 +35,7 @@ http:
   path: '/'
   alias: server_domain_name
   healthcheck:
-    path: '/actuator/health'
+    path: '/tasks-api-actuator/health'
     success_codes: '200,301'
     healthy_threshold: 3
     unhealthy_threshold: 2
