@@ -9,7 +9,7 @@ services:
     ports:
       - "4566:4566"
     volumes:
-      - ./src/city-tasks-events/target/city-tasks-events-1.6.0.jar:/var/lib/localstack/city-tasks-events.jar
+      - ./src/city-tasks-events/target/city-tasks-events-1.7.0.jar:/var/lib/localstack/city-tasks-events.jar
       - ./utils/aws/dynamodb/devices-test-data.json:/var/lib/localstack/devices.json
       - ./utils/docker/localstack/resources.sh:/etc/localstack/init/ready.d/resources-setup.sh
       - /var/run/docker.sock:/var/run/docker.sock
@@ -29,7 +29,7 @@ services:
       - hiperium-network
 
   tasks-api:
-    image: aosolorzano/city-tasks-api:1.6.0
+    image: aosolorzano/city-tasks-api:1.7.0
     container_name: tasks-api
     build:
       context: .
@@ -45,7 +45,7 @@ services:
       - hiperium-network
 
   tasks-proxy:
-    image: aosolorzano/city-tasks-proxy:1.6.0
+    image: aosolorzano/city-tasks-proxy:1.7.0
     container_name: tasks-proxy
     build:
       context: .

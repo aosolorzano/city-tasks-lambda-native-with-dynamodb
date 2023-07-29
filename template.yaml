@@ -5,8 +5,11 @@ Description: SAM Template for the City Tasks Events project.
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 15
+    Timeout: 20
     MemorySize: 512
+    Runtime: provided.al2
+    Architectures:
+      - arm64
 
 Resources:
   CityTasksEventsFunction:
@@ -14,14 +17,11 @@ Resources:
     Properties:
       CodeUri: ./src/city-tasks-events
       Handler: com.hiperium.city.tasks.events.ApplicationHandler::handleRequest
-      Runtime: java17
-      Architectures:
-        - arm64
       Environment:
         Variables:
           POWERTOOLS_LOG_LEVEL: DEBUG
       Events:
-        TaskExecutionTrigger:
+        TaskExecutionEvent:
           Type: EventBridgeRule # More info about EventBridgeRule EventBridgeCustomEvent Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#eventbridgerule
           Properties:
             Pattern:
@@ -29,6 +29,8 @@ Resources:
                 - com.hiperium.city.tasks
               detail-type:
                 - TaskExecution
+    Metadata:
+      BuildMethod: makefile
 
   LogGroup:
     Type: AWS::Logs::LogGroup

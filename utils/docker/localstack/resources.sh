@@ -79,4 +79,16 @@ awslocal events put-targets       \
   --targets "Id"="1","Arn"="$lambda_arn"
 
 echo ""
+echo "CREATING TIME-STREAM DATABASE..."
+awslocal timestream-write create-database \
+  --database-name CityOperationsDB
+
+echo ""
+echo "CREATING TIME-STREAM TABLE..."
+awslocal timestream-write create-table  \
+  --database-name CityOperationsDB      \
+  --table-name TaskEventsTable          \
+  --retention-properties MemoryStoreRetentionPeriodInHours=24,MagneticStoreRetentionPeriodInDays=7
+
+echo ""
 echo "DONE!"

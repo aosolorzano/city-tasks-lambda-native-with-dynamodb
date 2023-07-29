@@ -4,7 +4,7 @@
         <Console name="JsonAppender" target="SYSTEM_OUT">
             <JsonLayout complete="false" compact="false" eventEol="true" properties="false" stacktraceAsString="true">
                 <KeyValuePair key="appName" value="city-tasks-events" />
-                <KeyValuePair key="version" value="1.6.0" />
+                <KeyValuePair key="version" value="1.7.0" />
             </JsonLayout>
         </Console>
     </Appenders>

@@ -1,7 +1,7 @@
 #####################################################################################
 ########################## Stage 1: Docker Builder Image ############################
 #####################################################################################
-FROM ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.1 AS builder
+FROM ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.2 AS builder
 WORKDIR /workspace/app
 COPY mvnw                              mvnw
 COPY .mvn                              .mvn

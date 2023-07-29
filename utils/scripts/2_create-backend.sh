@@ -91,9 +91,9 @@ echo ""
 echo "DONE!"
 
 echo ""
-echo "GENERATING LAMBDA FUNCTION JAR..."
+echo "GENERATING DOCKER BUILDER IMAGE FOR LAMBDA FUNCTION..."
 echo ""
-mvn clean install -DskipTests -f "$WORKING_DIR"/src/city-tasks-events/pom.xml
+docker build -t al2-graalvm:maven -f src/city-tasks-events/Dockerfile .
 echo ""
 echo "DONE!"
 
@@ -115,7 +115,7 @@ copilot init                              \
   --name api                              \
   --type 'Load Balanced Web Service'      \
   --port 8080                             \
-  --tag '1.6.0'                           \
+  --tag '1.7.0'                           \
   --dockerfile './src/city-tasks-api/Dockerfile'
 echo ""
 echo "DONE!"
@@ -144,9 +144,9 @@ copilot deploy                            \
   --app city-tasks                        \
   --name api                              \
   --env "$AWS_WORKLOADS_ENV"              \
-  --tag '1.6.0'                           \
+  --tag '1.7.0'                           \
   --no-rollback                           \
-  --resource-tags project=Hiperium,copilot-application-type=api,copilot-application-version=1.6.0
+  --resource-tags project=Hiperium,copilot-application-type=api,copilot-application-version=1.7.0
 echo ""
 echo "DONE!"
 

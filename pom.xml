@@ -5,19 +5,19 @@
     <groupId>com.hiperium.city</groupId>
     <artifactId>city-tasks-parent</artifactId>
     <name>city-tasks-parent</name>
-    <version>1.6.0</version>
+    <version>1.7.0</version>
     <packaging>pom</packaging>
     <description>Hiperium City Tasks Parent POM.</description>
 
     <properties>
         <java.version>17</java.version>
-        <spring.boot.version>3.1.1</spring.boot.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <spring.boot.version>3.1.2</spring.boot.version>
         <aws.sdk.version>2.20.59</aws.sdk.version>
         <aws.powertools.version>1.15.0</aws.powertools.version>
         <junit.jupiter.version>5.9.3</junit.jupiter.version>
         <testcontainers.version>1.18.3</testcontainers.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
         <maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
@@ -74,4 +74,14 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.16.0</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>

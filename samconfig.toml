@@ -7,25 +7,5 @@ version = 0.1
 stack_name = "city-tasks-events-dev"
 
 [dev.build.parameters]
-cached = false
-parallel = true
-
-[dev.validate.parameters]
-lint = true
-
-[dev.package.parameters]
-resolve_s3 = true
-
-[dev.deploy.parameters]
-capabilities = "CAPABILITY_IAM"
-confirm_changeset = true
-resolve_s3 = true
-
-[dev.sync.parameters]
-watch = true
-
-[dev.local_start_api.parameters]
-warm_containers = "EAGER"
-
-[dev.local_start_lambda.parameters]
-warm_containers = "EAGER"
+build_image = ["al2-graalvm:maven"]
+use_container = true

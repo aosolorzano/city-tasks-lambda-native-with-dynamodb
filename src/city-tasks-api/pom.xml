@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.hiperium.city</groupId>
         <artifactId>city-tasks-parent</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>city-tasks-api</artifactId>
@@ -23,10 +23,6 @@
 
     <dependencies>
         <!-- SPRING BOOT -->
-        <!--dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>

@@ -166,7 +166,7 @@ $ ./mvnw spring-boot:build-image -Pnative -DskipTests
 Then, you can run the app like any other container:
 
 ```bash
-$ docker run --rm city-tasks-api:1.6.0
+$ docker run --rm city-tasks-api:1.7.0
 ```
 
 ### Executable with Native Build Tools
