@@ -13,16 +13,16 @@ Globals:
 
 Resources:
   CityTasksEventsFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function   # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: ./src/city-tasks-events
       Handler: com.hiperium.city.tasks.events.ApplicationHandler::handleRequest
       Environment:
         Variables:
-          POWERTOOLS_LOG_LEVEL: DEBUG
+          JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"   # Tiered Compilation: https://catalog.workshops.aws/java-on-aws-lambda/en-US/02-accelerate/tiered
       Events:
         TaskExecutionEvent:
-          Type: EventBridgeRule # More info about EventBridgeRule EventBridgeCustomEvent Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#eventbridgerule
+          Type: EventBridgeRule   # More info about EventBridgeRule EventBridgeCustomEvent Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#eventbridgerule
           Properties:
             Pattern:
               source:

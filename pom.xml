@@ -15,7 +15,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <spring.boot.version>3.1.2</spring.boot.version>
         <aws.sdk.version>2.20.59</aws.sdk.version>
-        <aws.powertools.version>1.15.0</aws.powertools.version>
+        <aws.powertools.version>1.16.1</aws.powertools.version>
         <junit.jupiter.version>5.9.3</junit.jupiter.version>
         <testcontainers.version>1.18.3</testcontainers.version>
         <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
@@ -23,6 +23,7 @@
         <maven.surefire.plugin.version>3.1.2</maven.surefire.plugin.version>
         <maven.failsafe.plugin.version>3.1.2</maven.failsafe.plugin.version>
         <maven.shade.plugin.version>3.5.0</maven.shade.plugin.version>
+        <maven.dependency.plugin.version>3.6.0</maven.dependency.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -81,6 +82,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
                 <version>2.16.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven.dependency.plugin.version}</version>
             </plugin>
         </plugins>
     </build>

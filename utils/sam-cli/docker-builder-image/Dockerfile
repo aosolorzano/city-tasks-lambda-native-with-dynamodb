@@ -6,17 +6,17 @@ RUN yum -y update && \
       zlib-devel glibc-static libcxx libcxx-devel llvm-toolset-7 zlib-static && \
     rm -rf /var/cache/yum
 
-# GraalVM
+# GraalVM - Verify LTS version at: https://github.com/graalvm/graalvm-ce-builds/releases
 ENV JAVA_VERSION java17
-ENV GRAAL_VERSION 22.3.2
+ENV GRAAL_VERSION 22.3.3
 ENV GRAAL_FOLDERNAME graalvm-ce-${JAVA_VERSION}-${GRAAL_VERSION}
 ENV GRAAL_FILENAME graalvm-ce-${JAVA_VERSION}-linux-aarch64-${GRAAL_VERSION}.tar.gz
 RUN curl -4 -L https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAAL_VERSION}/${GRAAL_FILENAME} | tar -xvz
 RUN mv $GRAAL_FOLDERNAME /usr/lib/graalvm
 RUN rm -rf $GRAAL_FOLDERNAME
 
-# Maven
-ENV MVN_VERSION 3.9.3
+# Maven - Verify latest version at: https://dlcdn.apache.org/maven/maven-3/
+ENV MVN_VERSION 3.9.4
 ENV MVN_FOLDERNAME apache-maven-${MVN_VERSION}
 ENV MVN_FILENAME apache-maven-${MVN_VERSION}-bin.tar.gz
 RUN curl -4 -L https://dlcdn.apache.org/maven/maven-3/${MVN_VERSION}/binaries/${MVN_FILENAME} | tar -xvz
@@ -29,9 +29,9 @@ RUN ln -s /usr/lib/maven/bin/mvn /usr/bin/mvn
 ENV JAVA_HOME /usr/lib/graalvm
 
 # Getting Maven dependencies
-COPY pom.xml                           /tmp/pom.xml
-COPY src/city-tasks-api/pom.xml        /tmp/src/city-tasks-api/pom.xml
-RUN mvn dependency:go-offline -B -f    /tmp/src/city-tasks-api/pom.xml
+COPY ../../../pom.xml                           /tmp/pom.xml
+COPY ../../../src/city-tasks-events/pom.xml     /tmp/src/city-tasks-events/pom.xml
+RUN mvn dependency:go-offline -B -f             /tmp/src/city-tasks-events/pom.xml
 
 # AWS Lambda Builders
 RUN amazon-linux-extras enable python3.8
@@ -40,6 +40,6 @@ RUN curl -L get-pip.io | python3.8
 RUN pip3 install aws-lambda-builders
 
 VOLUME /project
-WORKDIR /project
+WORKDIR /projects
 
 ENTRYPOINT ["sh"]

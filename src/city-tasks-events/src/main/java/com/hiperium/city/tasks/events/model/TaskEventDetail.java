@@ -1,6 +1,6 @@
 package com.hiperium.city.tasks.events.model;
 
-import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hiperium.city.tasks.events.utils.enums.EnumDeviceOperation;
 
 public class TaskEventDetail {

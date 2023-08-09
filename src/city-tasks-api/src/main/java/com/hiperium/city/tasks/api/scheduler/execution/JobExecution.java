@@ -65,12 +65,12 @@ public class JobExecution implements Job {
                 if (Objects.nonNull(resultEntry.eventId())) {
                     log.info("Event ID: {} sent successfully to EventBridge.", resultEntry.eventId());
                 } else {
-                    log.error("Error sending event to EventBridge. Error Code: {}. Error message: {}.",
+                    log.error("Error sending events to EventBridge. Error Code: {}. Error message: {}.",
                             resultEntry.errorCode(), resultEntry.errorMessage());
                 }
             }
         } catch (EventBridgeException e) {
-            log.error("Error sending event to EventBridge. Error Code: {}. Error message: {}.",
+            log.error("Error sending events to EventBridge. Error Code: {}. Error message: {}.",
                     e.awsErrorDetails().errorCode(), e.awsErrorDetails().errorMessage());
         }
     }

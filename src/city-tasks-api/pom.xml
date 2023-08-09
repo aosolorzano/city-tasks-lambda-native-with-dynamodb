@@ -19,6 +19,7 @@
         <hibernate.enhance.plugin.version>6.2.6.Final</hibernate.enhance.plugin.version>
         <springdoc.openapi.ui.version>2.1.0</springdoc.openapi.ui.version>
         <native.plugin.version>0.9.23</native.plugin.version>
+        <logback.json.version>0.1.5</logback.json.version>
     </properties>
 
     <dependencies>
@@ -108,12 +109,12 @@
         <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
             <artifactId>logback-json-classic</artifactId>
-            <version>0.1.5</version>
+            <version>${logback.json.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
             <artifactId>logback-jackson</artifactId>
-            <version>0.1.5</version>
+            <version>${logback.json.version}</version>
         </dependency>
         <!-- TESTING -->
         <dependency>

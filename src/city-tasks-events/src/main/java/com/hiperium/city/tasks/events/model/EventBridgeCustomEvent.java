@@ -1,6 +1,7 @@
 package com.hiperium.city.tasks.events.model;
 
-import com.amazonaws.lambda.thirdparty.com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 import java.util.List;

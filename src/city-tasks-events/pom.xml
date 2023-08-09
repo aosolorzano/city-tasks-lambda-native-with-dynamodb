@@ -9,16 +9,21 @@
     </parent>
     <artifactId>city-tasks-events</artifactId>
     <name>city-tasks-events</name>
+    <packaging>jar</packaging>
 
     <properties>
         <imageName>native</imageName>
         <lambda.core.version>1.2.2</lambda.core.version>
         <lambda.runtime.client.version>2.3.3</lambda.runtime.client.version>
+        <logback.version>1.4.9</logback.version>
+        <logback.contrib.version>0.1.5</logback.contrib.version>
+        <jackson.databind.version>2.15.2</jackson.databind.version>
         <native.maven.plugin.version>0.9.23</native.maven.plugin.version>
         <junit.platform.native.version>0.9.23</junit.platform.native.version>
+        <exec.maven.plugin.version>3.1.0</exec.maven.plugin.version>
         <aspectj.plugin.version>1.14.0</aspectj.plugin.version>
-        <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
         <mainClass>com.amazonaws.services.lambda.runtime.api.client.AWSLambda</mainClass>
+        <tracingAgentClass>com.hiperium.city.tasks.events.utils.agent.TracingAgentUtil</tracingAgentClass>
     </properties>
 
     <dependencies>
@@ -31,25 +36,42 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-runtime-interface-client</artifactId>
             <version>${lambda.runtime.client.version}</version>
-            <classifier>linux-aarch_64</classifier>
         </dependency>
+
         <!-- LAMBDA POWER-TOOLS -->
-        <dependency>
+        <!--dependency>
             <groupId>software.amazon.lambda</groupId>
             <artifactId>powertools-validation</artifactId>
             <version>${aws.powertools.version}</version>
+        </dependency-->
+
+        <!-- LOGGING -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
         </dependency>
         <dependency>
-            <groupId>software.amazon.lambda</groupId>
-            <artifactId>powertools-logging</artifactId>
-            <version>${aws.powertools.version}</version>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
         </dependency>
-        <!-- UTILS LOGGING -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>2.0.7</version>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-json-classic</artifactId>
+            <version>${logback.contrib.version}</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-jackson</artifactId>
+            <version>${logback.contrib.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.databind.version}</version>
+        </dependency>
+
         <!-- TESTING -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -69,20 +91,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven.dependency.plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
@@ -90,33 +98,31 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>aspectj-maven-plugin</artifactId>
-                <version>${aspectj.plugin.version}</version>
-                <configuration>
-                    <source>16</source><!-- Supports only until version 16 -->
-                    <target>16</target>
-                    <complianceLevel>16</complianceLevel>
-                    <aspectLibraries>
-                        <aspectLibrary>
-                            <groupId>software.amazon.lambda</groupId>
-                            <artifactId>powertools-validation</artifactId>
-                        </aspectLibrary>
-                        <aspectLibrary>
-                            <groupId>software.amazon.lambda</groupId>
-                            <artifactId>powertools-logging</artifactId>
-                        </aspectLibrary>
-                    </aspectLibraries>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>aspectj-maven-plugin</artifactId>
+                        <version>${aspectj.plugin.version}</version>
+                        <configuration>
+                            <source>16</source>
+                            <target>16</target>
+                            <complianceLevel>16</complianceLevel>
+                            <aspectLibraries>
+                                <aspectLibrary>
+                                    <groupId>software.amazon.lambda</groupId>
+                                    <artifactId>powertools-validation</artifactId>
+                                </aspectLibrary>
+                            </aspectLibraries>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -152,10 +158,54 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven.compiler.plugin.version}</version>
+                        <configuration>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
+                            <excludes>
+                                <exclude>**/TracingAgentUtil.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>${maven.shade.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>${mainClass}</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
                         <version>${native.maven.plugin.version}</version>
                         <extensions>true</extensions>
+                        <configuration>
+                            <skip>false</skip>
+                            <imageName>${imageName}</imageName>
+                            <buildArgs>
+                                -H:+ReportExceptionStackTraces
+                                --enable-all-security-services
+                            </buildArgs>
+                            <classpath>
+                                <param>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</param>
+                            </classpath>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>build-native</id>
@@ -165,12 +215,35 @@
                                 <phase>package</phase>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>tracing-agent</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>${exec.maven.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
-                            <skip>false</skip>
-                            <imageName>${imageName}</imageName>
-                            <buildArgs>
-                                <buildArg>--no-fallback</buildArg>
-                            </buildArgs>
+                            <executable>${env.JAVA_HOME}/bin/java</executable>
+                            <arguments>
+                                <argument>-agentlib:native-image-agent=config-output-dir=${project.build.directory}/tracing-agent</argument>
+                                <argument>-cp</argument>
+                                <classpath/>
+                                <argument>${tracingAgentClass}</argument>
+                            </arguments>
                         </configuration>
                     </plugin>
                 </plugins>

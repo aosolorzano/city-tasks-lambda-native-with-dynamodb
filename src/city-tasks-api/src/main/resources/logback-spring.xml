@@ -10,12 +10,14 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
     <appender name="jsonLogbackAppender" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
-            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
-                <prettyPrint>true</prettyPrint>
-            </jsonFormatter>
-            <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
-        </layout>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+                    <prettyPrint>true</prettyPrint>
+                </jsonFormatter>
+                <timestampFormat>yyyy-MM-dd' 'HH:mm:ss.SSS</timestampFormat>
+            </layout>
+        </encoder>
     </appender>
 
     <springProfile name="dev">
