@@ -176,6 +176,42 @@
         "parameterTypes": []
       },
       {
+        "name": "getAccount",
+        "parameterTypes": []
+      },
+      {
+        "name": "getDetail",
+        "parameterTypes": []
+      },
+      {
+        "name": "getDetailType",
+        "parameterTypes": []
+      },
+      {
+        "name": "getId",
+        "parameterTypes": []
+      },
+      {
+        "name": "getRegion",
+        "parameterTypes": []
+      },
+      {
+        "name": "getResources",
+        "parameterTypes": []
+      },
+      {
+        "name": "getSource",
+        "parameterTypes": []
+      },
+      {
+        "name": "getTime",
+        "parameterTypes": []
+      },
+      {
+        "name": "getVersion",
+        "parameterTypes": []
+      },
+      {
         "name": "setAccount",
         "parameterTypes": [
           "java.lang.String"
@@ -242,6 +278,18 @@
         "parameterTypes": []
       },
       {
+        "name": "getDeviceId",
+        "parameterTypes": []
+      },
+      {
+        "name": "getDeviceOperation",
+        "parameterTypes": []
+      },
+      {
+        "name": "getTaskId",
+        "parameterTypes": []
+      },
+      {
         "name": "setDeviceId",
         "parameterTypes": [
           "java.lang.String"
@@ -267,6 +315,132 @@
     "queryAllDeclaredMethods": true
   },
   {
+    "name": "com.networknt.schema.AdditionalPropertiesValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.AnyOfValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.EnumValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.ItemsValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.PropertiesValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.RefValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.RequiredValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.TypeValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.networknt.schema.UniqueItemsValidator",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.fasterxml.jackson.databind.JsonNode",
+          "com.networknt.schema.JsonSchema",
+          "com.networknt.schema.ValidationContext"
+        ]
+      }
+    ]
+  },
+  {
     "name": "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
     "methods": [
       {
@@ -277,6 +451,18 @@
   },
   {
     "name": "java.io.FilePermission"
+  },
+  {
+    "name": "java.io.Serializable",
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "java.lang.Cloneable",
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "java.lang.Comparable",
+    "queryAllDeclaredMethods": true
   },
   {
     "name": "java.lang.RuntimePermission"
@@ -304,6 +490,12 @@
   },
   {
     "name": "java.security.SecurityPermission"
+  },
+  {
+    "name": "java.util.Date",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true
   },
   {
     "name": "java.util.PropertyPermission"

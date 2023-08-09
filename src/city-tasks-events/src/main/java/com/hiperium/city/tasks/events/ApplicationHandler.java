@@ -15,11 +15,12 @@ public class ApplicationHandler implements RequestStreamHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationHandler.class);
 
     static {
-        // FunctionUtil.validateAndLoadJsonSchema();
+        FunctionUtil.validateAndLoadJsonSchema();
     }
 
     public void handleRequest(final InputStream inputStream, final OutputStream outputStream, final Context context) {
         EventBridgeCustomEvent event = FunctionUtil.unmarshal(inputStream, EventBridgeCustomEvent.class);
         LOGGER.debug("handleRequest(): {}", event);
+        FunctionUtil.validateEvent(event);
     }
 }

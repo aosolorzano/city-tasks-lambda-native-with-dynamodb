@@ -6,7 +6,7 @@
     "source": {
       "type": "string"
     },
-    "detailType": {
+    "detail-type": {
       "type": "string"
     },
     "detail": {
@@ -27,5 +27,5 @@
       "required": [ "taskId", "deviceId", "deviceOperation" ]
     }
   },
-  "required": [ "source", "detailType", "detail" ]
+  "required": [ "source", "detail-type", "detail" ]
 }

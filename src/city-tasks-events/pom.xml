@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.hiperium.city</groupId>
@@ -39,11 +39,21 @@
         </dependency>
 
         <!-- LAMBDA POWER-TOOLS -->
-        <!--dependency>
+        <dependency>
             <groupId>software.amazon.lambda</groupId>
             <artifactId>powertools-validation</artifactId>
             <version>${aws.powertools.version}</version>
-        </dependency-->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>aws-lambda-java-events</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j2-impl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- LOGGING -->
         <dependency>
@@ -98,31 +108,29 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <!--
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>aspectj-maven-plugin</artifactId>
-                        <version>${aspectj.plugin.version}</version>
-                        <configuration>
-                            <source>16</source>
-                            <target>16</target>
-                            <complianceLevel>16</complianceLevel>
-                            <aspectLibraries>
-                                <aspectLibrary>
-                                    <groupId>software.amazon.lambda</groupId>
-                                    <artifactId>powertools-validation</artifactId>
-                                </aspectLibrary>
-                            </aspectLibraries>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>compile</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>aspectj-maven-plugin</artifactId>
+                <version>${aspectj.plugin.version}</version>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                    <complianceLevel>16</complianceLevel>
+                    <aspectLibraries>
+                        <aspectLibrary>
+                            <groupId>software.amazon.lambda</groupId>
+                            <artifactId>powertools-validation</artifactId>
+                        </aspectLibrary>
+                    </aspectLibraries>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -181,7 +189,8 @@
                                 </goals>
                                 <configuration>
                                     <transformers>
-                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <transformer
+                                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                             <mainClass>${mainClass}</mainClass>
                                         </transformer>
                                     </transformers>
@@ -203,7 +212,8 @@
                                 --enable-all-security-services
                             </buildArgs>
                             <classpath>
-                                <param>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</param>
+                                <param>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar
+                                </param>
                             </classpath>
                         </configuration>
                         <executions>
@@ -239,7 +249,9 @@
                         <configuration>
                             <executable>${env.JAVA_HOME}/bin/java</executable>
                             <arguments>
-                                <argument>-agentlib:native-image-agent=config-output-dir=${project.build.directory}/tracing-agent</argument>
+                                <argument>
+                                    -agentlib:native-image-agent=config-output-dir=${project.build.directory}/tracing-agent
+                                </argument>
                                 <argument>-cp</argument>
                                 <classpath/>
                                 <argument>${tracingAgentClass}</argument>

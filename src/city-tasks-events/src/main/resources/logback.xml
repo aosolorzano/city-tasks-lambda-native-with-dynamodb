@@ -1,4 +1,5 @@
 <configuration>
+
     <appender name="logbackAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
@@ -10,7 +11,11 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="logbackAppender"/>
+    <root level="INFO">
+        <appender-ref ref="logbackAppender"/>   <!-- Default global logging level -->
     </root>
+    <logger name="com.hiperium.city.tasks.events" level="DEBUG" additivity="false">
+        <appender-ref ref="logbackAppender"/>
+    </logger>
+    <logger name="com.networknt.schema" level="ERROR" />
 </configuration>
