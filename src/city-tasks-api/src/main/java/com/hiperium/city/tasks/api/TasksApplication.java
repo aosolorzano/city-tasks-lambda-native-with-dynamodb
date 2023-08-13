@@ -5,8 +5,8 @@ import com.hiperium.city.tasks.api.config.hints.HibernateProxyHints;
 import com.hiperium.city.tasks.api.config.hints.QuartzHints;
 import com.hiperium.city.tasks.api.config.hints.ResourceBundleHints;
 import com.hiperium.city.tasks.api.dto.ErrorDetailsDTO;
-import com.hiperium.city.tasks.api.dto.TaskEventDTO;
-import com.hiperium.city.tasks.api.scheduler.execution.JobExecution;
+import com.hiperium.city.tasks.api.dto.TaskExecutionDTO;
+import com.hiperium.city.tasks.api.execution.JobExecution;
 import com.hiperium.city.tasks.api.utils.PropertiesLoaderUtil;
 import com.hiperium.city.tasks.api.vo.AuroraSecretsVO;
 import com.hiperium.city.tasks.api.vo.AwsPropertiesVO;
@@ -33,7 +33,7 @@ import java.nio.charset.StandardCharsets;
 @EnableTransactionManagement
 @EnableConfigurationProperties(AwsPropertiesVO.class)
 @ImportRuntimeHints({QuartzHints.class, HibernateProxyHints.class, ResourceBundleHints.class})
-@RegisterReflectionForBinding({AuroraSecretsVO.class, TaskEventDTO.class, ErrorDetailsDTO.class, JobExecution.class})
+@RegisterReflectionForBinding({AuroraSecretsVO.class, TaskExecutionDTO.class, ErrorDetailsDTO.class, JobExecution.class})
 public class TasksApplication {
 
     @SneakyThrows(JsonProcessingException.class)

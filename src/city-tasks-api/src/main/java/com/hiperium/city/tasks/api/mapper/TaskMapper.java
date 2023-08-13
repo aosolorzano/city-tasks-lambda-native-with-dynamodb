@@ -9,10 +9,8 @@ import org.mapstruct.factory.Mappers;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface TaskMapper {
-
-    TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);
 
     Task toTask(TaskDTO taskDTO);
 

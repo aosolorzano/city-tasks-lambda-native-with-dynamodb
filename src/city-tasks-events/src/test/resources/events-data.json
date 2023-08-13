@@ -1,0 +1,67 @@
+{
+  "Events": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "00001"
+          },
+          "deviceId": {
+            "S": "123"
+          },
+          "taskId": {
+            "N": "1001"
+          },
+          "deviceOperation": {
+            "S": "DEACTIVATE"
+          },
+          "executionDateTime": {
+            "N": "1001"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "00002"
+          },
+          "deviceId": {
+            "S": "456"
+          },
+          "taskId": {
+            "N": "1002"
+          },
+          "deviceOperation": {
+            "S": "ACTIVATE"
+          },
+          "executionDateTime": {
+            "N": "1001"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {
+            "S": "00003"
+          },
+          "deviceId": {
+            "S": "456"
+          },
+          "taskId": {
+            "N": "1002"
+          },
+          "deviceOperation": {
+            "S": "DEACTIVATE"
+          },
+          "executionDateTime": {
+            "N": "1001"
+          }
+        }
+      }
+    }
+  ]
+}

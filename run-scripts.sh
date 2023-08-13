@@ -185,3 +185,4 @@ menu() {
 #### Main function ####
 verifyEnvironmentVariables
 menu
+

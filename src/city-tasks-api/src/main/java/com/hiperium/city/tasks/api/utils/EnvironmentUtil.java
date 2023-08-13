@@ -3,16 +3,15 @@ package com.hiperium.city.tasks.api.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hiperium.city.tasks.api.vo.AuroraSecretsVO;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnvironmentUtil {
-
-    private EnvironmentUtil() {
-        // Empty constructor.
-    }
 
     public static AuroraSecretsVO getAuroraSecretVO() throws JsonProcessingException {
         String auroraSecret = System.getenv("CITY_TASKS_DB_CLUSTER_SECRET");

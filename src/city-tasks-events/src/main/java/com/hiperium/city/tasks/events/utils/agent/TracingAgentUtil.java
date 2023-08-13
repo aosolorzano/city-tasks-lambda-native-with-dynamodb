@@ -1,6 +1,8 @@
 package com.hiperium.city.tasks.events.utils.agent;
 
 import com.hiperium.city.tasks.events.ApplicationHandler;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.io.InputStream;
 
@@ -8,11 +10,8 @@ import java.io.InputStream;
  * The class <code>TracingAgentUtil</code> is a helper class used only by the GraalVM Tracing Agent. This class is
  * excluded from the final JAR file.
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TracingAgentUtil {
-
-    private TracingAgentUtil() {
-        // Do nothing
-    }
 
     public static void main(String[] args) {
         ApplicationHandler applicationHandler = new ApplicationHandler();

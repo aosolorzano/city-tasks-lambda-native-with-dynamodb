@@ -9,9 +9,15 @@ services:
     ports:
       - "4566:4566"
     volumes:
-      - ./src/city-tasks-events/target/city-tasks-events-1.7.0.jar:/var/lib/localstack/city-tasks-events.jar
-      - ./utils/aws/dynamodb/devices-test-data.json:/var/lib/localstack/devices.json
-      - ./utils/docker/localstack/resources.sh:/etc/localstack/init/ready.d/resources-setup.sh
+      # CITY TASKS API RESOURCES
+      - ./src/city-tasks-api/src/test/resources/localstack-setup.sh:/etc/localstack/init/ready.d/api-setup.sh
+      - ./src/city-tasks-api/src/test/resources/devices-data.json:/var/lib/localstack/devices-data.json
+      # CITY TASKS EVENTS RESOURCES
+      - ./src/city-tasks-events/src/test/resources/localstack-setup.sh:/etc/localstack/init/ready.d/events-setup.sh
+      - ./src/city-tasks-events/src/test/resources/events-data.json:/var/lib/localstack/events-data.json
+      - ./src/city-tasks-events/target/city-tasks-events-1.7.0.jar:/var/lib/localstack/events.jar
+      # CITY TASKS COMMON RESOURCES
+      - ./utils/docker/localstack/common-setup.sh:/etc/localstack/init/ready.d/common-setup.sh
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - hiperium-network

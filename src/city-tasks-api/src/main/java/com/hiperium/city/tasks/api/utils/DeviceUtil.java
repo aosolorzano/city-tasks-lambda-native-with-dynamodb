@@ -2,6 +2,8 @@ package com.hiperium.city.tasks.api.utils;
 
 import com.hiperium.city.tasks.api.model.Device;
 import com.hiperium.city.tasks.api.utils.enums.EnumDeviceStatus;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
@@ -11,11 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DeviceUtil {
-
-    private DeviceUtil() {
-        // Private constructor.
-    }
 
     public static Device getFromItemResponse(GetItemResponse itemResponse) {
         Map<String, AttributeValue> item = itemResponse.item();

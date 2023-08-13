@@ -6,16 +6,15 @@ import com.hiperium.city.tasks.api.exception.ValidationException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BeanValidationUtil {
-
-    private BeanValidationUtil() {
-        // Empty constructor.
-    }
 
     public static void validateBean(TaskDTO taskDto) {
         try (ValidatorFactory factory = buildDefaultValidatorFactory()) {

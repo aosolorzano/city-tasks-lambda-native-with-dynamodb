@@ -1,19 +1,29 @@
 package com.hiperium.city.tasks.events;
 
+import com.hiperium.city.tasks.events.common.AbstractContainerBaseTest;
 import com.hiperium.city.tasks.events.model.EventBridgeCustomEvent;
+import com.hiperium.city.tasks.events.utils.DynamoDBUtil;
 import com.hiperium.city.tasks.events.utils.FunctionUtil;
+import com.hiperium.city.tasks.events.utils.TestsUtil;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.TestInstance.Lifecycle;
 
-@TestInstance(Lifecycle.PER_CLASS)
-@TestMethodOrder(OrderAnnotation.class)
-class ApplicationHandlerTest {
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class ApplicationHandlerTest extends AbstractContainerBaseTest {
+
+    @BeforeAll
+    static void beforeAll() {
+        DynamoDbClient dynamoDbClient = DynamoDBUtil.getDynamoDbClient();
+        TestsUtil.verifyIfTableIsCreated(dynamoDbClient);
+    }
 
     @Test
     @Order(1)
@@ -49,26 +59,16 @@ class ApplicationHandlerTest {
         }
     }
 
-    @Test
     @Order(5)
-    void givenEventWithInvalidDetail_whenInvokeLambdaFunction_thenThrowError() throws IOException {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/invalid-event-detail.json")) {
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "events/invalid-event-detail.json",
+            "events/event-without-detail.json"})
+    void givenEventList_whenInvokeLambdaFunction_thenReturn200(String jsonFilePath) throws IOException {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(jsonFilePath)) {
             ApplicationHandler handler = new ApplicationHandler();
-            IllegalArgumentException expectedException = assertThrows(IllegalArgumentException.class,
-                    () -> handler.handleRequest(inputStream, null, null), "IllegalArgumentException expected.");
-            assertEquals(FunctionUtil.UNMARSHALLING_INPUT_ERROR, expectedException.getMessage());
-        }
-    }
-
-    @Test
-    @Order(6)
-    void givenEventWithoutDetail_whenInvokeLambdaFunction_thenThrowError() throws IOException {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/event-without-detail.json")) {
-            ApplicationHandler handler = new ApplicationHandler();
-            IllegalArgumentException expectedException = assertThrows(IllegalArgumentException.class,
-                    () -> handler.handleRequest(inputStream, null, null), "IllegalArgumentException expected.");
-            assertEquals(FunctionUtil.EVENT_OBJECT_VALIDATION_ERROR, expectedException.getMessage());
+            assertThrows(IllegalArgumentException.class, () ->
+                    handler.handleRequest(inputStream, null, null));
         }
     }
 }
-

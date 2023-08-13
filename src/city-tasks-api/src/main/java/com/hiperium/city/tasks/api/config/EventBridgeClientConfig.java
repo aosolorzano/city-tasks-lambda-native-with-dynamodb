@@ -25,7 +25,7 @@ public class EventBridgeClientConfig {
         var eventBridgeClientBuilder = EventBridgeClient.builder()
                 .region(DefaultAwsRegionProviderChain.builder().build().getRegion())
                 .credentialsProvider(DefaultCredentialsProvider.builder().build());
-        String endpointOverride = this.environment.getProperty(PropertiesLoaderUtil.AWS_ENDPOINT_OVERRIDE);
+        String endpointOverride = this.environment.getProperty(PropertiesLoaderUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY);
         if (Objects.nonNull(endpointOverride) && !endpointOverride.isBlank()) {
             eventBridgeClientBuilder.endpointOverride(URI.create(endpointOverride));
         }

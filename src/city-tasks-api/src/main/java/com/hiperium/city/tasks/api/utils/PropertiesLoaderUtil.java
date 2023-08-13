@@ -2,20 +2,19 @@ package com.hiperium.city.tasks.api.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.hiperium.city.tasks.api.vo.AuroraSecretsVO;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.MessageFormat;
 import java.util.Objects;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PropertiesLoaderUtil {
 
-    public static final String AWS_ENDPOINT_OVERRIDE = "aws.endpoint-override";
+    public static final String AWS_ENDPOINT_OVERRIDE_PROPERTY = "aws.endpoint-override";
     private static final String JDBC_SQL_CONNECTION = "jdbc:postgresql://{0}:{1}/{2}";
-
-    private PropertiesLoaderUtil() {
-        // Private constructor.
-    }
 
     public static void loadProperties() throws JsonProcessingException {
         setDatasourceConnection();
@@ -61,7 +60,7 @@ public final class PropertiesLoaderUtil {
         String endpointOverride = EnvironmentUtil.getAwsEndpointOverride();
         if (Objects.nonNull(endpointOverride) && !endpointOverride.isEmpty()) {
             log.debug("AWS Endpoint-Override: {}", endpointOverride);
-            System.setProperty(AWS_ENDPOINT_OVERRIDE, endpointOverride);
+            System.setProperty(AWS_ENDPOINT_OVERRIDE_PROPERTY, endpointOverride);
         }
     }
 }

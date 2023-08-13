@@ -1,6 +1,8 @@
 package com.hiperium.city.tasks.api.utils;
 
 import com.hiperium.city.tasks.api.dto.ErrorDetailsDTO;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.web.server.ServerWebExchange;
 
 import java.time.ZoneId;
@@ -9,11 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ErrorUtil {
-
-    private ErrorUtil() {
-        // Empty constructor.
-    }
 
     public static ErrorDetailsDTO getErrorDetailsVO(ServerWebExchange exchange,
                                                     String errorMessage,

@@ -3,24 +3,31 @@ package com.hiperium.city.tasks.events;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.hiperium.city.tasks.events.model.EventBridgeCustomEvent;
+import com.hiperium.city.tasks.events.service.DynamoDBService;
+import com.hiperium.city.tasks.events.utils.DynamoDBUtil;
 import com.hiperium.city.tasks.events.utils.FunctionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
+@Slf4j
 public class ApplicationHandler implements RequestStreamHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationHandler.class);
+    private final DynamoDBService dynamoDBService;
 
-    static {
+    public ApplicationHandler() {
+        log.debug("ApplicationHandler() - START");
         FunctionUtil.validateAndLoadJsonSchema();
+        DynamoDbClient dynamoDbClient = DynamoDBUtil.getDynamoDbClient();
+        this.dynamoDBService = new DynamoDBService(dynamoDbClient);
     }
 
     public void handleRequest(final InputStream inputStream, final OutputStream outputStream, final Context context) {
-        EventBridgeCustomEvent event = FunctionUtil.unmarshal(inputStream, EventBridgeCustomEvent.class);
-        LOGGER.debug("handleRequest(): {}", event);
+        var event = FunctionUtil.unmarshal(inputStream, EventBridgeCustomEvent.class);
+        log.debug("handleRequest(): {}", event);
         FunctionUtil.validateEvent(event);
+        this.dynamoDBService.createEventItem(event.getDetail());
     }
 }

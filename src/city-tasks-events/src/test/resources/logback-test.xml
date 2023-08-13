@@ -17,20 +17,26 @@
         </encoder>
     </appender>
 
-    <springProfile name="dev">
-        <root level="INFO">
-            <appender-ref ref="textAppender" />
-        </root>
-        <logger name="com.hiperium.city.tasks.api" level="DEBUG" additivity="false">
-            <appender-ref ref="jsonAppender"/>
-        </logger>
-        <logger name="org.springframework.boot" level="INFO">
-            <appender-ref ref="textAppender" />
-        </logger>
-    </springProfile>
+    <root level="INFO">
+        <appender-ref ref="textAppender"/><!-- Default global logging level -->
+    </root>
 
-    <logger name="logback-json" additivity="false" level="INFO">
+    <logger name="com.hiperium.city.tasks.events" level="DEBUG" additivity="false">
         <appender-ref ref="jsonAppender"/>
     </logger>
+    <logger name="com.networknt.schema" level="ERROR">
+        <appender-ref ref="textAppender"/>
+    </logger>
+    <logger name="ch.qos.logback" level="ERROR">
+        <appender-ref ref="textAppender"/>
+    </logger>
+    <logger name="org.testcontainers" level="INFO">
+        <appender-ref ref="textAppender"/>
+    </logger>
+    <logger name="tc.testcontainers" level="INFO">
+        <appender-ref ref="textAppender"/>
+    </logger>
+    <logger name="tc.localstack" level="INFO">
+        <appender-ref ref="textAppender"/>
+    </logger>
 </configuration>
-

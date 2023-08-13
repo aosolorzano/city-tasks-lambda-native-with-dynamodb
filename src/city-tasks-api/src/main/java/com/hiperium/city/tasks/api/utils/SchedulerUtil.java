@@ -1,22 +1,21 @@
 package com.hiperium.city.tasks.api.utils;
 
-import com.hiperium.city.tasks.api.scheduler.execution.JobExecution;
+import com.hiperium.city.tasks.api.execution.JobExecution;
 import com.hiperium.city.tasks.api.model.Task;
 import com.hiperium.city.tasks.api.utils.enums.EnumDays;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.quartz.*;
 
 import java.time.ZoneId;
 import java.util.*;
 import java.util.Calendar;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SchedulerUtil {
 
     public static final String TASK_GROUP_NAME = "Task#Group";
     public static final String TASK_JOB_ID_DATA_KEY = "taskJobId";
-
-    private SchedulerUtil() {
-        // Empty constructor.
-    }
 
     public static JobDetail createJobDetailFromTask(Task task) {
         return JobBuilder.newJob(JobExecution.class)

@@ -7,6 +7,8 @@ import com.hiperium.city.tasks.api.model.Task;
 import com.hiperium.city.tasks.api.utils.enums.EnumDeviceOperation;
 import com.hiperium.city.tasks.api.utils.enums.EnumTaskOperation;
 import com.hiperium.city.tasks.api.utils.enums.EnumTaskStatus;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -17,15 +19,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TaskUtil {
 
     private static final List<String> DAYS_LIST = Arrays.asList("SUN","MON","TUE","WED","THU","FRI","SAT");
     private static final char[] HEX_ARRAY = "HiperiumTasksService".toCharArray();
     private static final int JOB_ID_LENGTH = 20;
-
-    private TaskUtil() {
-        // Empty constructor.
-    }
 
     public static String generateJobId() {
         MessageDigest salt;

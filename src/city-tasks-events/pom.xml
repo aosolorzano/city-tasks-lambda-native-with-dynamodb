@@ -16,14 +16,10 @@
         <lambda.core.version>1.2.2</lambda.core.version>
         <lambda.runtime.client.version>2.3.3</lambda.runtime.client.version>
         <logback.version>1.4.9</logback.version>
-        <logback.contrib.version>0.1.5</logback.contrib.version>
         <jackson.databind.version>2.15.2</jackson.databind.version>
-        <native.maven.plugin.version>0.9.23</native.maven.plugin.version>
-        <junit.platform.native.version>0.9.23</junit.platform.native.version>
-        <exec.maven.plugin.version>3.1.0</exec.maven.plugin.version>
-        <aspectj.plugin.version>1.14.0</aspectj.plugin.version>
         <mainClass>com.amazonaws.services.lambda.runtime.api.client.AWSLambda</mainClass>
         <tracingAgentClass>com.hiperium.city.tasks.events.utils.agent.TracingAgentUtil</tracingAgentClass>
+        <maven.exec.plugin.version>3.1.0</maven.exec.plugin.version>
     </properties>
 
     <dependencies>
@@ -37,7 +33,6 @@
             <artifactId>aws-lambda-java-runtime-interface-client</artifactId>
             <version>${lambda.runtime.client.version}</version>
         </dependency>
-
         <!-- LAMBDA POWER-TOOLS -->
         <dependency>
             <groupId>software.amazon.lambda</groupId>
@@ -54,7 +49,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <!-- LOGGING -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -67,32 +61,15 @@
             <version>${logback.version}</version>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback.contrib</groupId>
-            <artifactId>logback-json-classic</artifactId>
-            <version>${logback.contrib.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback.contrib</groupId>
-            <artifactId>logback-jackson</artifactId>
-            <version>${logback.contrib.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.databind.version}</version>
         </dependency>
-
         <!-- TESTING -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.graalvm.buildtools</groupId>
-            <artifactId>junit-platform-native</artifactId>
-            <version>${junit.platform.native.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -104,58 +81,47 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.source}</target>
+                    <annotationProcessorPaths>
+                        <!-- Lombok needs to be defined before Mapstruct to pick up the Lombok annotations. -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>aspectj-maven-plugin</artifactId>
-                <version>${aspectj.plugin.version}</version>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
-                    <complianceLevel>16</complianceLevel>
-                    <aspectLibraries>
-                        <aspectLibrary>
-                            <groupId>software.amazon.lambda</groupId>
-                            <artifactId>powertools-validation</artifactId>
-                        </aspectLibrary>
-                    </aspectLibraries>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>${maven.shade.plugin.version}</version>
                 <configuration>
+                    <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
-                                <exclude>module-info.class</exclude>
-                                <exclude>META-INF/*</exclude>
-                                <exclude>META-INF/versions/**</exclude>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
                             </excludes>
                         </filter>
                     </filters>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <version>${graalvm.native.plugin.version}</version>
+                <extensions>true</extensions>
             </plugin>
         </plugins>
     </build>
@@ -170,8 +136,8 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>${maven.compiler.plugin.version}</version>
                         <configuration>
-                            <source>${java.version}</source>
-                            <target>${java.version}</target>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.source}</target>
                             <excludes>
                                 <exclude>**/TracingAgentUtil.java</exclude>
                             </excludes>
@@ -189,8 +155,7 @@
                                 </goals>
                                 <configuration>
                                     <transformers>
-                                        <transformer
-                                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                             <mainClass>${mainClass}</mainClass>
                                         </transformer>
                                     </transformers>
@@ -202,8 +167,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>${native.maven.plugin.version}</version>
-                        <extensions>true</extensions>
+                        <version>${graalvm.native.plugin.version}</version>
                         <configuration>
                             <skip>false</skip>
                             <imageName>${imageName}</imageName>
@@ -212,9 +176,9 @@
                                 --enable-all-security-services
                             </buildArgs>
                             <classpath>
-                                <param>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar
-                                </param>
+                                <param>${project.build.directory}/${project.artifactId}-${project.version}-shaded.jar</param>
                             </classpath>
+                            <requiredVersion>${graalvm.required.version}</requiredVersion>
                         </configuration>
                         <executions>
                             <execution>
@@ -237,7 +201,7 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>${exec.maven.plugin.version}</version>
+                        <version>${maven.exec.plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>process-classes</phase>

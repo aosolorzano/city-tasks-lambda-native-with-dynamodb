@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskEventDTO {
+public class TaskExecutionDTO {
 
     @JsonProperty("taskId")
     private Long taskId;
@@ -21,4 +21,7 @@ public class TaskEventDTO {
 
     @JsonProperty("deviceOperation")
     private EnumDeviceOperation deviceOperation;
+
+    @JsonProperty("executionDateTime")
+    private Long executionDateTime;
 }

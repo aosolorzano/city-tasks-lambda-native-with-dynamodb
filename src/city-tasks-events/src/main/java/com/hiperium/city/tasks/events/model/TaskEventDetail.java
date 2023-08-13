@@ -3,6 +3,7 @@ package com.hiperium.city.tasks.events.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hiperium.city.tasks.events.utils.enums.EnumDeviceOperation;
 
+//@Data
 public class TaskEventDetail {
 
     @JsonProperty("taskId")
@@ -13,6 +14,9 @@ public class TaskEventDetail {
 
     @JsonProperty("deviceOperation")
     private EnumDeviceOperation deviceOperation;
+
+    @JsonProperty("executionDateTime")
+    private Long executionDateTime;
 
     public Long getTaskId() {
         return taskId;
@@ -38,12 +42,11 @@ public class TaskEventDetail {
         this.deviceOperation = deviceOperation;
     }
 
-    @Override
-    public String toString() {
-        return "TaskEventDetail{" +
-                "taskId=" + taskId +
-                ", deviceId='" + deviceId + '\'' +
-                ", deviceOperation=" + deviceOperation +
-                '}';
+    public Long getExecutionDateTime() {
+        return executionDateTime;
+    }
+
+    public void setExecutionDateTime(Long executionDateTime) {
+        this.executionDateTime = executionDateTime;
     }
 }
