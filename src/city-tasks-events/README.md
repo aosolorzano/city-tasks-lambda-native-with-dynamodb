@@ -33,7 +33,7 @@ sam build
 ```
 
 **Note:**
-Some configuration files are required to compiled to a native binary. These files are located in `src/resources/META-INF` folder. Adjust the `src/resources/META-INF/helloworld/reflect-config.json` file to support your classes accordingly. If this file is not configured to match your handler, the Lambda Runtime Interface Client (RIC) won't be able to find your handler and throw a `ClassNotFoundException`
+Some configuration files are required to compiled to a native binary. These files are located in `src/resources/META-INF` folder. Adjust the `src/resources/META-INF/com.hiperium.city/city-tasks-events/reflect-config.json` file to support your classes accordingly. If this file is not configured to match your handler, the Lambda Runtime Interface Client (RIC) won't be able to find your handler and throw a `ClassNotFoundException`
 Also keep in mind the Lambda events classes needs to be recognized by GraalVM to not throw the aforementioned exception.
 
 ## Deploy the Lambda Function application
@@ -58,7 +58,7 @@ The first command will build the source of your application. The second command 
 - **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
 - **AWS Region**: The AWS region you want to deploy your applicationHandler to.
 - **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
-- **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modified IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
+- **Allow SAM CLI IAM role creation**: Many AWS SAM templates, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modified IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this project, you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
 - **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to your application.
 
 You can find your API Gateway Endpoint URL in the output values displayed after deployment.
@@ -92,7 +92,7 @@ Events:
   CityTasksEventsApi:
     Type: Api
     Properties:
-      Path: /audit
+      Path: /logs
       Method: get
 ```
 

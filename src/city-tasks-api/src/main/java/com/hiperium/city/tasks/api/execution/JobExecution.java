@@ -28,7 +28,7 @@ public class JobExecution implements Job {
 
     @Override
     public void execute(final JobExecutionContext context) {
-        log.debug("execute() - START: {}", context);
+        log.debug("execute() - START");
         final String jobId = context.getJobDetail().getJobDataMap().getString(SchedulerUtil.TASK_JOB_ID_DATA_KEY);
         Mono.just(jobId)
                 .map(this.taskRepository::findByJobId)

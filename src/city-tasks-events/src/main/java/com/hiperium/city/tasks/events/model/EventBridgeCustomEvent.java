@@ -35,5 +35,4 @@ public class EventBridgeCustomEvent {
 
     @JsonProperty("detail")
     private TaskEventDetail detail;
-
 }

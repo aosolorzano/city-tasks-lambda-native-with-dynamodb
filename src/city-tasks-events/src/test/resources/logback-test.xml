@@ -24,19 +24,19 @@
     <logger name="com.hiperium.city.tasks.events" level="DEBUG" additivity="false">
         <appender-ref ref="jsonAppender"/>
     </logger>
-    <logger name="com.networknt.schema" level="ERROR">
+    <logger name="com.networknt.schema" level="INFO">
         <appender-ref ref="textAppender"/>
     </logger>
-    <logger name="ch.qos.logback" level="ERROR">
+    <logger name="ch.qos.logback" level="INFO">
         <appender-ref ref="textAppender"/>
     </logger>
     <logger name="org.testcontainers" level="INFO">
         <appender-ref ref="textAppender"/>
     </logger>
-    <logger name="tc.testcontainers" level="INFO">
+    <logger name="tc.testcontainers" level="DEBUG">
         <appender-ref ref="textAppender"/>
     </logger>
-    <logger name="tc.localstack" level="INFO">
+    <logger name="tc.localstack" level="DEBUG">
         <appender-ref ref="textAppender"/>
     </logger>
 </configuration>

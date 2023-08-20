@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.hiperium.city</groupId>
@@ -8,32 +9,22 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>city-tasks-events</artifactId>
-    <name>city-tasks-events</name>
     <packaging>jar</packaging>
+    <name>city-tasks-events</name>
+    <description>Lambda function that receives custom events from EventBridge and store them in DynamoDB.</description>
 
     <properties>
         <imageName>native</imageName>
-        <lambda.core.version>1.2.2</lambda.core.version>
         <lambda.runtime.client.version>2.3.3</lambda.runtime.client.version>
-        <logback.version>1.4.9</logback.version>
-        <jackson.databind.version>2.15.2</jackson.databind.version>
-        <mainClass>com.amazonaws.services.lambda.runtime.api.client.AWSLambda</mainClass>
-        <tracingAgentClass>com.hiperium.city.tasks.events.utils.agent.TracingAgentUtil</tracingAgentClass>
         <maven.exec.plugin.version>3.1.0</maven.exec.plugin.version>
     </properties>
 
     <dependencies>
+        <!-- AWS -->
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-lambda-java-core</artifactId>
-            <version>${lambda.core.version}</version>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>lambda</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-lambda-java-runtime-interface-client</artifactId>
-            <version>${lambda.runtime.client.version}</version>
-        </dependency>
-        <!-- LAMBDA POWER-TOOLS -->
         <dependency>
             <groupId>software.amazon.lambda</groupId>
             <artifactId>powertools-validation</artifactId>
@@ -51,6 +42,16 @@
         </dependency>
         <!-- LOGGING -->
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
@@ -63,13 +64,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.databind.version}</version>
+            <version>${jackson-bom.version}</version>
         </dependency>
         <!-- TESTING -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit.jupiter.version}</version>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -79,12 +80,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.source}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <annotationProcessorPaths>
-                        <!-- Lombok needs to be defined before Mapstruct to pick up the Lombok annotations. -->
+                        <!-- Lombok needs to be defined before Mapstruct to pick up the Lombok annotations first. -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -100,28 +101,66 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>${maven.shade.plugin.version}</version>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
+                    <excludes>
+                        <exclude>**/*ITest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <includes>
+                                <include>**/*ITest.java</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/ApplicationHandlerTest.java</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven-shade-plugin.version}</version>
+                <configuration>
+                    <keepDependenciesWithProvidedScope>false</keepDependenciesWithProvidedScope>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
                             <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>bootstrap</exclude><!-- IMPORTANT: This is required to avoid conflicts with the Lambda runtime -->
+                                <exclude>builddef.lst</exclude>
+                                <exclude>module-info.class</exclude>
+                                <exclude>**/TracingAgentUtil.java</exclude>
+                                <exclude>META-INF/*</exclude>
+                                <exclude>META-INF/gradle/**</exclude>
+                                <exclude>META-INF/versions/**</exclude>
                             </excludes>
                         </filter>
                     </filters>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-                <version>${graalvm.native.plugin.version}</version>
-                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -129,24 +168,36 @@
     <profiles>
         <profile>
             <id>native</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>aws-lambda-java-runtime-interface-client</artifactId>
+                    <version>${lambda.runtime.client.version}</version>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <version>${maven.compiler.plugin.version}</version>
-                        <configuration>
-                            <source>${maven.compiler.source}</source>
-                            <target>${maven.compiler.source}</target>
-                            <excludes>
-                                <exclude>**/TracingAgentUtil.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-shade-plugin</artifactId>
-                        <version>${maven.shade.plugin.version}</version>
+                        <version>${maven-shade-plugin.version}</version>
+                        <configuration>
+                            <keepDependenciesWithProvidedScope>true</keepDependenciesWithProvidedScope>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>builddef.lst</exclude>
+                                        <exclude>module-info.class</exclude>
+                                        <exclude>**/TracingAgentUtil.java</exclude>
+                                        <exclude>META-INF/*</exclude>
+                                        <exclude>META-INF/gradle/**</exclude>
+                                        <exclude>META-INF/versions/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
                         <executions>
                             <execution>
                                 <phase>package</phase>
@@ -156,7 +207,7 @@
                                 <configuration>
                                     <transformers>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                            <mainClass>${mainClass}</mainClass>
+                                            <mainClass>com.amazonaws.services.lambda.runtime.api.client.AWSLambda</mainClass>
                                         </transformer>
                                     </transformers>
                                     <shadedArtifactAttached>true</shadedArtifactAttached>
@@ -167,7 +218,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>${graalvm.native.plugin.version}</version>
+                        <version>${native-build-tools-plugin.version}</version>
                         <configuration>
                             <skip>false</skip>
                             <imageName>${imageName}</imageName>
@@ -196,6 +247,13 @@
 
         <profile>
             <id>tracing-agent</id>
+            <dependencies>
+                <dependency>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>aws-lambda-java-runtime-interface-client</artifactId>
+                    <version>${lambda.runtime.client.version}</version>
+                </dependency>
+            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -218,7 +276,7 @@
                                 </argument>
                                 <argument>-cp</argument>
                                 <classpath/>
-                                <argument>${tracingAgentClass}</argument>
+                                <argument>com.hiperium.city.tasks.events.utils.agent.TracingAgentUtil</argument>
                             </arguments>
                         </configuration>
                     </plugin>

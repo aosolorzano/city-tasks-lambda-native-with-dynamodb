@@ -5,6 +5,16 @@ export WORKING_DIR
 
 function setEnvironmentVariables() {
   echo ""
+  if [ -z "$AWS_WORKLOADS_ENV" ]; then
+    read -r -p 'Enter the <Environment Name> of your the Service:      [dev] ' env_name
+    if [ -z "$env_name" ]; then
+      AWS_WORKLOADS_ENV='dev'
+    else
+      AWS_WORKLOADS_ENV=$env_name
+    fi
+    export AWS_WORKLOADS_ENV
+  fi
+
   read -r -p 'Enter the <AWS Profile> for the Service Workloads:     [default] ' aws_workloads_profile
   if [ -z "$aws_workloads_profile" ]; then
     AWS_WORKLOADS_PROFILE='default'
@@ -31,16 +41,6 @@ function setEnvironmentVariables() {
       AWS_IDP_PROFILE=$idp_profile_name
     fi
     export AWS_IDP_PROFILE
-  fi
-
-  if [ -z "$AWS_WORKLOADS_ENV" ]; then
-    read -r -p 'Enter the <AWS Environment> to deploy the Service:     [dev] ' env_name
-    if [ -z "$env_name" ]; then
-      AWS_WORKLOADS_ENV='dev'
-    else
-      AWS_WORKLOADS_ENV=$env_name
-    fi
-    export AWS_WORKLOADS_ENV
   fi
 }
 

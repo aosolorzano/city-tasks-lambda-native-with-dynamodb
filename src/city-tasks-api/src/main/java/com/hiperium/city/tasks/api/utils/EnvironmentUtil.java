@@ -39,9 +39,9 @@ public final class EnvironmentUtil {
     }
 
     public static String getAwsEndpointOverride() {
-        String endpointOverride = System.getenv("AWS_ENDPOINT_OVERRIDE");
+        String endpointOverride = System.getenv("AWS_ENDPOINT_URL");
         if (Objects.isNull(endpointOverride) || endpointOverride.isBlank()) {
-            log.debug("AWS_ENDPOINT_OVERRIDE not found. Using defaults.");
+            log.debug("AWS_ENDPOINT_URL not found. Using defaults.");
         }
         return endpointOverride;
     }

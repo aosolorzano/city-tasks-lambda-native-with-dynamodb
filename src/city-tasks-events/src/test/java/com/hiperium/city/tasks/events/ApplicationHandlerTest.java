@@ -34,7 +34,7 @@ class ApplicationHandlerTest extends AbstractContainerBaseTest {
     @Test
     @Order(2)
     void givenValidInputEvent_whenUnmarshal_thenResultMustNotBeNull() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/event.json");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/lambda-valid-event.json");
         assertNotNull(inputStream);
         EventBridgeCustomEvent event = FunctionUtil.unmarshal(inputStream, EventBridgeCustomEvent.class);
         assertNotNull(event);
@@ -43,7 +43,7 @@ class ApplicationHandlerTest extends AbstractContainerBaseTest {
     @Test
     @Order(3)
     void givenValidInputEvent_whenValidateObject_thenNoExceptionMustThrown() {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/event.json");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/lambda-valid-event.json");
         assertNotNull(inputStream);
         EventBridgeCustomEvent event = FunctionUtil.unmarshal(inputStream, EventBridgeCustomEvent.class);
         assertNotNull(event);
@@ -53,7 +53,7 @@ class ApplicationHandlerTest extends AbstractContainerBaseTest {
     @Test
     @Order(4)
     void givenValidEvent_whenInvokeLambdaFunction_thenExecuteSuccessfully() throws IOException {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/event.json")) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/lambda-valid-event.json")) {
             ApplicationHandler handler = new ApplicationHandler();
             assertDoesNotThrow(() -> handler.handleRequest(inputStream, null, null));
         }
@@ -62,9 +62,9 @@ class ApplicationHandlerTest extends AbstractContainerBaseTest {
     @Order(5)
     @ParameterizedTest
     @ValueSource(strings = {
-            "events/invalid-event-detail.json",
-            "events/event-without-detail.json"})
-    void givenEventList_whenInvokeLambdaFunction_thenReturn200(String jsonFilePath) throws IOException {
+            "events/lambda-event-invalid-detail.json",
+            "events/lambda-event-without-detail.json"})
+    void givenEventList_whenInvokeLambdaFunction_thenReturnOkResponse(String jsonFilePath) throws IOException {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(jsonFilePath)) {
             ApplicationHandler handler = new ApplicationHandler();
             assertThrows(IllegalArgumentException.class, () ->

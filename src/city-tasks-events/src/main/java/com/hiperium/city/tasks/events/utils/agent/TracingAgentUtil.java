@@ -15,7 +15,7 @@ public final class TracingAgentUtil {
 
     public static void main(String[] args) {
         ApplicationHandler applicationHandler = new ApplicationHandler();
-        InputStream inputStream = TracingAgentUtil.class.getClassLoader().getResourceAsStream("events/event.json");
+        InputStream inputStream = TracingAgentUtil.class.getClassLoader().getResourceAsStream("events/lambda-valid-event.json");
         applicationHandler.handleRequest(inputStream, null, null);
     }
 

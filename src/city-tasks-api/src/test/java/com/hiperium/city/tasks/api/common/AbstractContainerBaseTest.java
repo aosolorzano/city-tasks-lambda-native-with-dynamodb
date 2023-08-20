@@ -22,25 +22,23 @@ public abstract class AbstractContainerBaseTest {
     private static final PostgreSQLContainer<?> POSTGRES_CONTAINER;
     private static final LocalStackContainer LOCALSTACK_CONTAINER;
 
-    private static AccessTokenResponse accessTokenResponse;
-
     // Singleton containers.
     // See: https://www.testcontainers.org/test_framework_integration/manual_lifecycle_control/#singleton-containers
     static {
         KEYCLOAK_CONTAINER = new KeycloakContainer()
                 .withRealmImportFile("keycloak-realm.json");
         KEYCLOAK_CONTAINER.start();
-        POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:14.4")
+        POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:latest")
                 .withUsername("postgres")
                 .withPassword("postgres123")
                 .withDatabaseName("CityTasksDB");
         POSTGRES_CONTAINER.start();
         LOCALSTACK_CONTAINER = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
                 .withServices(LocalStackContainer.Service.DYNAMODB)
-                .withCopyToContainer(MountableFile.forClasspathResource("localstack-setup.sh"),
-                        "/etc/localstack/init/ready.d/devices-setup.sh")
-                .withCopyToContainer(MountableFile.forClasspathResource("devices-data.json"),
-                        "/var/lib/localstack/devices-data.json");
+                .withCopyToContainer(MountableFile.forClasspathResource("infra-setup.sh"),
+                        "/etc/localstack/init/ready.d/api-setup.sh")
+                .withCopyToContainer(MountableFile.forClasspathResource("data-setup.json"),
+                        "/var/lib/localstack/api-data.json");
         LOCALSTACK_CONTAINER.start();
     }
 
@@ -70,13 +68,12 @@ public abstract class AbstractContainerBaseTest {
         registry.add("aws.accessKeyId", LOCALSTACK_CONTAINER::getAccessKey);
         registry.add("aws.secretAccessKey", LOCALSTACK_CONTAINER::getSecretKey);
         registry.add(PropertiesLoaderUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY, () ->
-                LOCALSTACK_CONTAINER.getEndpointOverride(LocalStackContainer.Service.DYNAMODB)
-                        .toString());
+                LOCALSTACK_CONTAINER.getEndpoint().toString());
     }
 
     protected String getBearerAccessToken() {
         Keycloak keycloakClient = KEYCLOAK_CONTAINER.getKeycloakAdminClient();
-        accessTokenResponse = keycloakClient.tokenManager().getAccessToken();
+        AccessTokenResponse accessTokenResponse = keycloakClient.tokenManager().getAccessToken();
         return "Bearer " + Objects.requireNonNull(accessTokenResponse).getToken();
     }
 }

@@ -10,12 +10,10 @@ awslocal dynamodb create-table                \
   --key-schema                                \
     AttributeName=id,KeyType=HASH             \
     AttributeName=deviceId,KeyType=RANGE      \
-  --billing-mode PAY_PER_REQUEST
+  --billing-mode PAY_PER_REQUEST              \
+  --region us-east-1
 
 echo ""
 echo "WRITING EVENTS ITEMS..."
-awslocal dynamodb batch-write-item                \
+awslocal dynamodb batch-write-item            \
     --request-items file:///var/lib/localstack/events-data.json
-
-echo ""
-echo "DONE!"

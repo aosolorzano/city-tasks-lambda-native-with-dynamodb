@@ -20,12 +20,15 @@ import static software.amazon.lambda.powertools.validation.ValidationUtils.valid
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FunctionUtil {
 
+    public static final String AWS_ENDPOINT_OVERRIDE_PROPERTY = "aws.endpoint-override";
+    public static final String AWS_ENDPOINT_OVERRIDE_VARIABLE = "AWS_ENDPOINT_URL";
+
     private static final String EVENT_OBJECT_VALIDATION_ERROR = "Required fields are missing in Task events.";
     private static final String UNMARSHALLING_INPUT_ERROR = "Error unmarshalling the Task events.";
 
     private static final String INVALID_JSON_SCHEMA_DEFINITION_ERROR = "JSON Schema definition is not valid.";
     private static final String JSON_SCHEMA_FILE_NOT_FOUND_ERROR = "JSON Schema file not found.";
-    private static final String JSON_SCHEMA_FILE_LOCATION = "/schemas/custom-event-schema.json";
+    private static final String JSON_SCHEMA_FILE_LOCATION = "/schemas/tasks-event-schema.json";
 
 
     private static final ObjectMapper MAPPER = createObjectMapper();

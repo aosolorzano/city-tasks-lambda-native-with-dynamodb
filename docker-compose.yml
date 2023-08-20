@@ -4,20 +4,21 @@ services:
   tasks-localstack:
     image: localstack/localstack:latest
     container_name: tasks-localstack
-    env_file:
-      - ./utils/docker/env/localstack-dev.env
     ports:
-      - "4566:4566"
+      - "127.0.0.1:4566:4566"
+    env_file:
+      #  https://docs.localstack.cloud/references/configuration/
+      - ./utils/docker/env/localstack-dev.env
     volumes:
       # CITY TASKS API RESOURCES
-      - ./src/city-tasks-api/src/test/resources/localstack-setup.sh:/etc/localstack/init/ready.d/api-setup.sh
-      - ./src/city-tasks-api/src/test/resources/devices-data.json:/var/lib/localstack/devices-data.json
+      - ./src/city-tasks-api/src/test/resources/infra-setup.sh:/etc/localstack/init/ready.d/api-setup.sh
+      - ./src/city-tasks-api/src/test/resources/data-setup.json:/var/lib/localstack/api-data.json
       # CITY TASKS EVENTS RESOURCES
-      - ./src/city-tasks-events/src/test/resources/localstack-setup.sh:/etc/localstack/init/ready.d/events-setup.sh
-      - ./src/city-tasks-events/src/test/resources/events-data.json:/var/lib/localstack/events-data.json
-      - ./src/city-tasks-events/target/city-tasks-events-1.7.0.jar:/var/lib/localstack/events.jar
+      - ./src/city-tasks-events/src/test/resources/infra-setup.sh:/etc/localstack/init/ready.d/events-setup.sh
+      - ./src/city-tasks-events/src/test/resources/data-setup.json:/var/lib/localstack/events-data.json
+      - ./src/city-tasks-events/target/city-tasks-events-1.7.0.jar:/var/lib/localstack/city-tasks-events.jar
       # CITY TASKS COMMON RESOURCES
-      - ./utils/docker/localstack/common-setup.sh:/etc/localstack/init/ready.d/common-setup.sh
+      - ./utils/docker/localstack/common-infra-setup.sh:/etc/localstack/init/ready.d/common-setup.sh
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - hiperium-network
@@ -25,43 +26,42 @@ services:
   tasks-postgres:
     image: postgres:14.4
     container_name: tasks-postgres
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=CityTasksDB
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres123
-    ports:
-      - "5432:5432"
     networks:
       - hiperium-network
 
   tasks-api:
     image: aosolorzano/city-tasks-api:1.7.0
     container_name: tasks-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - tasks-postgres
     build:
       context: .
       dockerfile: src/city-tasks-api/Dockerfile
     env_file:
       - ./utils/docker/env/tasks-api-dev.env
-    depends_on:
-      - tasks-localstack
-      - tasks-postgres
-    ports:
-      - "8080:8080"
     networks:
       - hiperium-network
 
   tasks-proxy:
     image: aosolorzano/city-tasks-proxy:1.7.0
     container_name: tasks-proxy
+    ports:
+      - "443:443"
+    depends_on:
+      - tasks-api
     build:
       context: .
       dockerfile: src/city-tasks-proxy/Dockerfile
       args:
         envoy_env: dev
-    depends_on:
-      - tasks-api
-    ports:
-      - "443:443"
     networks:
       - hiperium-network
 

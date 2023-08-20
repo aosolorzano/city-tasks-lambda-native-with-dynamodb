@@ -47,7 +47,7 @@ class DeviceRepositoryTest extends AbstractContainerBaseTest {
     @Test
     @Order(1)
     @DisplayName("Wait for DynamoDB to be ready")
-    void givenDevicesTable_whenCreated_mustNotThrownError() throws InterruptedException {
+    void givenDevicesTable_whenCreated_mustNotThrownError() {
         TestsUtil.verifyIfTableIsCreated(this.dynamoDbAsyncClient);
     }
 

@@ -10,8 +10,8 @@ COPY src/city-tasks-api/pom.xml        src/city-tasks-api/pom.xml
 RUN ./mvnw dependency:go-offline -B -f src/city-tasks-api/pom.xml
 COPY src/city-tasks-api/src            src/city-tasks-api/src
 
-RUN ./mvnw clean package -DskipTests -f src/city-tasks-api/pom.xml  && \
-    mkdir -p src/city-tasks-api/target/dependency                   && \
+RUN ./mvnw clean package -DskipTests -f src/city-tasks-api/pom.xml
+RUN mkdir -p src/city-tasks-api/target/dependency && \
     (cd src/city-tasks-api/target/dependency; jar -xf ../city-tasks-api-*.jar)
 
 #####################################################################################

@@ -15,7 +15,7 @@ Resources:
   CityTasksEventsFunction:
     Type: AWS::Serverless::Function   # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: CityTasksEvents
+      FunctionName: 'city-tasks-events-function'
       CodeUri: ./src/city-tasks-events
       Handler: com.hiperium.city.tasks.events.ApplicationHandler::handleRequest
       Environment:

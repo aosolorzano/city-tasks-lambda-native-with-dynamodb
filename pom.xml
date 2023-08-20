@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.2</version>
+        <relativePath/>
+    </parent>
     <groupId>com.hiperium.city</groupId>
     <artifactId>city-tasks-parent</artifactId>
     <name>city-tasks-parent</name>
@@ -14,19 +20,12 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <spring.boot.version>3.1.2</spring.boot.version>
+        <spring.openapi.version>2.1.0</spring.openapi.version>
         <aws.sdk.version>2.20.122</aws.sdk.version>
-        <lombok.version>1.18.28</lombok.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <logback.contrib.version>0.1.5</logback.contrib.version>
         <aws.powertools.version>1.16.1</aws.powertools.version>
-        <junit.jupiter.version>5.9.3</junit.jupiter.version>
-        <testcontainers.version>1.18.3</testcontainers.version>
-        <graalvm.native.plugin.version>0.9.23</graalvm.native.plugin.version>
-        <graalvm.required.version>22.3.2</graalvm.required.version>
-        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
-        <maven.shade.plugin.version>3.5.0</maven.shade.plugin.version>
-        <maven.dependency.plugin.version>3.6.0</maven.dependency.plugin.version>
-        <maven.versions.plugin.version>2.16.0</maven.versions.plugin.version>
+        <graalvm.required.version>22.3</graalvm.required.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -37,13 +36,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${spring.boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>software.amazon.awssdk</groupId>
                 <artifactId>bom</artifactId>
@@ -65,8 +57,14 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>dynamodb-enhanced</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <!-- LOGGING -->
+        <!-- JSON LOGGING -->
         <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
             <artifactId>logback-json-classic</artifactId>
@@ -117,12 +115,12 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>${maven.versions.plugin.version}</version>
+                <version>${versions-maven-plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>${maven.dependency.plugin.version}</version>
+                <version>${maven-dependency-plugin.version}</version>
             </plugin>
         </plugins>
     </build>

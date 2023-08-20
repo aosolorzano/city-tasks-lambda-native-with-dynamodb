@@ -22,6 +22,4 @@ public class Event {
     private Long taskId;
 
     private EnumDeviceOperation deviceOperation;
-
-    private Long executionDateTime;
 }

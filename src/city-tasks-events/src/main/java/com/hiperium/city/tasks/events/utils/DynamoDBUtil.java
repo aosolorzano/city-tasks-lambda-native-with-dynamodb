@@ -15,17 +15,23 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DynamoDBUtil {
 
-    public static final String AWS_ENDPOINT_OVERRIDE_PROPERTY = "aws.endpoint-override";
-
     public static DynamoDbClient getDynamoDbClient() {
         DynamoDbClientBuilder builder = DynamoDbClient.builder()
                 .region(DefaultAwsRegionProviderChain.builder().build().getRegion())
                 .credentialsProvider(DefaultCredentialsProvider.builder().build());
-        String endpointOverrideURL = System.getProperty(AWS_ENDPOINT_OVERRIDE_PROPERTY);
+        String endpointOverrideURL = getEndpointOverrideURL();
         log.debug("DynamoDB Endpoint Override: {}", endpointOverrideURL);
         if (Objects.nonNull(endpointOverrideURL) && !endpointOverrideURL.isEmpty()) {
             builder.endpointOverride(URI.create(endpointOverrideURL));
         }
         return builder.build();
+    }
+
+    private static String getEndpointOverrideURL() {
+        String endpointOverrideURL = System.getProperty(FunctionUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY);
+        if (Objects.isNull(endpointOverrideURL) || endpointOverrideURL.isEmpty()) {
+            endpointOverrideURL = System.getenv(FunctionUtil.AWS_ENDPOINT_OVERRIDE_VARIABLE);
+        }
+        return endpointOverrideURL;
     }
 }

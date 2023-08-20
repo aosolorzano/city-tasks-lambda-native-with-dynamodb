@@ -3,6 +3,7 @@ package com.hiperium.city.tasks.events.service;
 import com.hiperium.city.tasks.events.mapper.EventMapper;
 import com.hiperium.city.tasks.events.model.Event;
 import com.hiperium.city.tasks.events.model.TaskEventDetail;
+import com.hiperium.city.tasks.events.utils.DynamoDBUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -17,7 +18,8 @@ public class DynamoDBService {
 
     private final DynamoDbTable<Event> eventTable;
 
-    public DynamoDBService(final DynamoDbClient dynamoDbClient) {
+    public DynamoDBService() {
+        DynamoDbClient dynamoDbClient = DynamoDBUtil.getDynamoDbClient();
         DynamoDbEnhancedClient dynamoDbEnhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDbClient)
                 .build();
