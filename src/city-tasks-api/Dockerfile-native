@@ -1,7 +1,8 @@
 #####################################################################################
 ########################## Stage 1: Docker Builder Image ############################
+####### https://github.com/graalvm/container/pkgs/container/graalvm-community #######
 #####################################################################################
-FROM ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.2 AS builder
+FROM ghcr.io/graalvm/graalvm-community:17.0.8-ol9 AS builder
 WORKDIR /workspace/app
 COPY mvnw                              mvnw
 COPY .mvn                              .mvn
@@ -15,6 +16,7 @@ RUN gu install native-image && \
 
 #####################################################################################
 #################### Stage 2: Docker Native Application Image #######################
+###### https://github.com/oracle/container-images/pkgs/container/oraclelinux ########
 #####################################################################################
 FROM oraclelinux:9-slim
 COPY --from=builder /workspace/app/src/city-tasks-api/target/city-tasks-api application

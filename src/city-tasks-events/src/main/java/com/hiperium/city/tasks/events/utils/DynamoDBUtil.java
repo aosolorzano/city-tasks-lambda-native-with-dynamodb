@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.http.crt.AwsCrtAsyncHttpClient;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClientBuilder;
 
@@ -15,10 +17,11 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DynamoDBUtil {
 
-    public static DynamoDbClient getDynamoDbClient() {
-        DynamoDbClientBuilder builder = DynamoDbClient.builder()
+    public static DynamoDbAsyncClient getDynamoDbClient() {
+        var builder = DynamoDbAsyncClient.builder()
                 .region(DefaultAwsRegionProviderChain.builder().build().getRegion())
-                .credentialsProvider(DefaultCredentialsProvider.builder().build());
+                .credentialsProvider(DefaultCredentialsProvider.builder().build())
+                .httpClientBuilder(AwsCrtAsyncHttpClient.builder());
         String endpointOverrideURL = getEndpointOverrideURL();
         log.debug("DynamoDB Endpoint Override: {}", endpointOverrideURL);
         if (Objects.nonNull(endpointOverrideURL) && !endpointOverrideURL.isEmpty()) {

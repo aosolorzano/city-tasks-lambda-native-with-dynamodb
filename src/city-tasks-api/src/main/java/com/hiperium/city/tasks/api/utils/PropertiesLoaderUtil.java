@@ -13,17 +13,15 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PropertiesLoaderUtil {
 
-    public static final String AWS_ENDPOINT_OVERRIDE_PROPERTY = "aws.endpoint-override";
     private static final String JDBC_SQL_CONNECTION = "jdbc:postgresql://{0}:{1}/{2}";
 
     public static void loadProperties() throws JsonProcessingException {
         setDatasourceConnection();
         setIdentityProviderEndpoint();
         setApplicationTimeZone();
-        setAwsEndpointOverride();
     }
 
-    public static void setDatasourceConnection() throws JsonProcessingException {
+    private static void setDatasourceConnection() throws JsonProcessingException {
         AuroraSecretsVO auroraSecretVO = EnvironmentUtil.getAuroraSecretVO();
         if (Objects.nonNull(auroraSecretVO)) {
             String sqlConnection = MessageFormat.format(JDBC_SQL_CONNECTION, auroraSecretVO.host(),
@@ -40,7 +38,7 @@ public final class PropertiesLoaderUtil {
         }
     }
 
-    public static void setIdentityProviderEndpoint() {
+    private static void setIdentityProviderEndpoint() {
         String idpEndpoint = EnvironmentUtil.getIdpEndpoint();
         if (Objects.nonNull(idpEndpoint) && !idpEndpoint.isEmpty()) {
             log.debug("IdP URI: {}", idpEndpoint);
@@ -48,19 +46,11 @@ public final class PropertiesLoaderUtil {
         }
     }
 
-    public static void setApplicationTimeZone() {
+    private static void setApplicationTimeZone() {
         String timeZoneId = EnvironmentUtil.getTimeZone();
         if (Objects.nonNull(timeZoneId) && !timeZoneId.isEmpty()) {
             log.debug("Time Zone: {}", timeZoneId);
             System.setProperty("city.tasks.time.zone", timeZoneId);
-        }
-    }
-
-    public static void setAwsEndpointOverride() {
-        String endpointOverride = EnvironmentUtil.getAwsEndpointOverride();
-        if (Objects.nonNull(endpointOverride) && !endpointOverride.isEmpty()) {
-            log.debug("AWS Endpoint-Override: {}", endpointOverride);
-            System.setProperty(AWS_ENDPOINT_OVERRIDE_PROPERTY, endpointOverride);
         }
     }
 }

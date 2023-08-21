@@ -3,7 +3,7 @@
 
 * **Author**: [Andres Solorzano](https://www.linkedin.com/in/aosolorzano/).
 * **Level**: Advanced.
-* **Technologies**: Java 17, Spring Boot 3, Spring Native, Spring WebFlux, Spring OAuth2, Quartz, Flyway, Lombok, Testcontainers, LocalStack, AWS Copilot CLI, SAM-CLI, Amazon Cognito, Aurora PostgreSQL, DynamoDB, Application Load Balancer, EventBridge, Lambda, and Docker.
+* **Technologies**: Java 17, Spring Boot 3, Spring Native, Spring WebFlux, Spring OAuth2, Quartz, Flyway, Lombok, Testcontainers, LocalStack, AWS Copilot CLI, AWS SAM-CLI, Amazon Cognito, Aurora with PostgreSQL, DynamoDB, Application Load Balancer, EventBridge, Lambda, and Docker.
 
 ![](utils/docs/images/solutions_architecture_v5.png)
 
@@ -30,7 +30,7 @@ This project also uses Docker Compose to deploy a local cluster with the require
 - AWS SAM CLI (version 1.90.+).
 - OpenJDK (version 17.0.+). You can use SDKMAN.
 - Apache Maven (version 3.9.+) You can use SDKMAN.
-- Spring Boot (version 3.1.1)
+- Spring Boot (version 3.1.+)
 - Docker and Docker Compose.
 
 ### Project Structure.

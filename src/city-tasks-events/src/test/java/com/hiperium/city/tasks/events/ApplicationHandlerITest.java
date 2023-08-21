@@ -10,16 +10,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 /**
  * To invoke this Integration Test, run the following command:
@@ -52,12 +50,12 @@ class ApplicationHandlerITest extends AbstractContainerBaseTest {
                 .endpointOverride(new URI(lambdaEndpoint))
                 .build();
         lambdaClient.createFunction(functionRequest);
-        log.debug("Waiting for Lambda to be Active....");
-        await().atMost(30, TimeUnit.SECONDS).until(TestsUtil.verifyLambdaActiveState(lambdaClient));
+        log.debug("Waiting for Lambda function to be Active....");
+        TestsUtil.waitForFunctionToBeActive(lambdaClient);
 
-        DynamoDbClient dynamoDbClient = DynamoDBUtil.getDynamoDbClient();
+        DynamoDbAsyncClient dynamoDbAsyncClient = DynamoDBUtil.getDynamoDbClient();
         log.debug("Waiting for DynamoDB table to be created...");
-        TestsUtil.verifyIfTableIsCreated(dynamoDbClient);
+        TestsUtil.waitForTableToBeCreated(dynamoDbAsyncClient);
     }
 
     @ParameterizedTest

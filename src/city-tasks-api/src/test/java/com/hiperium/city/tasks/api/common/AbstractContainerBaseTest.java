@@ -1,7 +1,7 @@
 package com.hiperium.city.tasks.api.common;
 
+import com.hiperium.city.tasks.api.utils.EnvironmentUtil;
 import com.hiperium.city.tasks.api.utils.TestsUtil;
-import com.hiperium.city.tasks.api.utils.PropertiesLoaderUtil;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.representations.AccessTokenResponse;
@@ -67,7 +67,7 @@ public abstract class AbstractContainerBaseTest {
         registry.add("aws.region", LOCALSTACK_CONTAINER::getRegion);
         registry.add("aws.accessKeyId", LOCALSTACK_CONTAINER::getAccessKey);
         registry.add("aws.secretAccessKey", LOCALSTACK_CONTAINER::getSecretKey);
-        registry.add(PropertiesLoaderUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY, () ->
+        registry.add(EnvironmentUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY, () ->
                 LOCALSTACK_CONTAINER.getEndpoint().toString());
     }
 

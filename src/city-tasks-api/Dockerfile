@@ -1,7 +1,7 @@
 #####################################################################################
 ########################## Stage 1: Docker Builder Image ############################
 #####################################################################################
-FROM amazoncorretto:17.0.7-al2023 AS builder
+FROM amazoncorretto:17.0.8-al2023 AS builder
 WORKDIR /workspace/app
 COPY mvnw                              mvnw
 COPY .mvn                              .mvn
@@ -17,7 +17,7 @@ RUN mkdir -p src/city-tasks-api/target/dependency && \
 #####################################################################################
 ######################## Stage 2: Docker Application Image ##########################
 #####################################################################################
-FROM amazoncorretto:17.0.7-al2023-headless
+FROM amazoncorretto:17.0.8-al2023-headless
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/src/city-tasks-api/target/dependency
 COPY --from=builder ${DEPENDENCY}/BOOT-INF/classes    /app

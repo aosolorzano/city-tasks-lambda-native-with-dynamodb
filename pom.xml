@@ -26,6 +26,7 @@
         <logback.contrib.version>0.1.5</logback.contrib.version>
         <aws.powertools.version>1.16.1</aws.powertools.version>
         <graalvm.required.version>22.3</graalvm.required.version>
+        <awaitility.version>4.2.0</awaitility.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -54,15 +55,14 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- AWS -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>dynamodb-enhanced</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>aws-crt-client</artifactId>
         </dependency>
         <!-- JSON LOGGING -->
         <dependency>

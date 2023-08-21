@@ -8,7 +8,7 @@ import com.hiperium.city.tasks.events.utils.TestsUtil;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,8 +21,8 @@ class ApplicationHandlerTest extends AbstractContainerBaseTest {
 
     @BeforeAll
     static void beforeAll() {
-        DynamoDbClient dynamoDbClient = DynamoDBUtil.getDynamoDbClient();
-        TestsUtil.verifyIfTableIsCreated(dynamoDbClient);
+        DynamoDbAsyncClient dynamoDbAsyncClient = DynamoDBUtil.getDynamoDbClient();
+        TestsUtil.waitForTableToBeCreated(dynamoDbAsyncClient);
     }
 
     @Test

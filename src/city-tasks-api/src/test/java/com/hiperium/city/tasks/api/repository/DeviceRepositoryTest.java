@@ -17,6 +17,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
@@ -28,7 +30,7 @@ import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 class DeviceRepositoryTest extends AbstractContainerBaseTest {
 
     public static final String DEVICE_ID = "123";
-    public static final Long WAIT_TIME_BETWEEN_CALLS = 300L;
+    public static final Long WAIT_TIME_BETWEEN_CALLS = 500L;
 
     @Autowired
     private DeviceRepository deviceRepository;
@@ -118,9 +120,11 @@ class DeviceRepositoryTest extends AbstractContainerBaseTest {
                 .verifyComplete();
 
         // Wait for DynamoDB to be updated
-        Thread.sleep(WAIT_TIME_BETWEEN_CALLS);
+        Mono<Device> deviceResponse = this.deviceRepository.findById(DEVICE_ID)
+                .delaySubscription(Duration.ofMillis(WAIT_TIME_BETWEEN_CALLS))
+                .single();
 
-        Mono<Device> deviceResponse = this.deviceRepository.findById(DEVICE_ID);
+        //Mono<Device> deviceResponse = this.deviceRepository.findById(DEVICE_ID);
         StepVerifier.create(deviceResponse)
                 .assertNext(device -> {
                     assertThat(device).isNotNull();

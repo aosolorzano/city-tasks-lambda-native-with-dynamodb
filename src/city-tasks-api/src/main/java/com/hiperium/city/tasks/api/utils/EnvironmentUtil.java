@@ -13,6 +13,8 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnvironmentUtil {
 
+    public static final String AWS_ENDPOINT_OVERRIDE_PROPERTY = "aws.endpoint-override";
+
     public static AuroraSecretsVO getAuroraSecretVO() throws JsonProcessingException {
         String auroraSecret = System.getenv("CITY_TASKS_DB_CLUSTER_SECRET");
         if (Objects.isNull(auroraSecret) || auroraSecret.isBlank()) {
@@ -36,13 +38,5 @@ public final class EnvironmentUtil {
             log.warn("CITY_TASKS_TIME_ZONE not found. Using defaults.");
         }
         return timeZoneId;
-    }
-
-    public static String getAwsEndpointOverride() {
-        String endpointOverride = System.getenv("AWS_ENDPOINT_URL");
-        if (Objects.isNull(endpointOverride) || endpointOverride.isBlank()) {
-            log.debug("AWS_ENDPOINT_URL not found. Using defaults.");
-        }
-        return endpointOverride;
     }
 }
