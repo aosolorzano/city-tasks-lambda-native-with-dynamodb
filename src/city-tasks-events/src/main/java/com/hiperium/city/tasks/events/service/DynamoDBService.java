@@ -15,20 +15,21 @@ import java.util.UUID;
 @Slf4j
 public class DynamoDBService {
 
-    private final DynamoDbAsyncTable<Event> eventTable;
+    private final DynamoDbAsyncTable<Event> dynamoDbAsyncTable;
 
     public DynamoDBService() {
         var dynamoDbAsyncClient = DynamoDBUtil.getDynamoDbClient();
         var dynamoDbEnhancedAsyncClient = DynamoDbEnhancedAsyncClient.builder()
                 .dynamoDbClient(dynamoDbAsyncClient)
                 .build();
-        this.eventTable = dynamoDbEnhancedAsyncClient.table(Event.TABLE_NAME, TableSchema.fromBean(Event.class));
+        this.dynamoDbAsyncTable = dynamoDbEnhancedAsyncClient
+                .table(Event.TABLE_NAME, TableSchema.fromBean(Event.class));
     }
 
     public void createEventItem(TaskEventDetail eventDetail) {
         Event event = Mappers.getMapper(EventMapper.class).fromTaskEventDetail(eventDetail);
         event.setId(UUID.randomUUID().toString());
         log.debug("createEventItem(): {}", event);
-        this.eventTable.putItem(event);
+        this.dynamoDbAsyncTable.putItem(event);
     }
 }

@@ -1,23 +1,20 @@
 package com.hiperium.city.tasks.api.model;
 
 import com.hiperium.city.tasks.api.utils.enums.EnumDeviceStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 @Data
 @Builder
+@DynamoDbBean
 @NoArgsConstructor
 @AllArgsConstructor
 public class Device {
 
     public static final String TABLE_NAME = "Devices";
-    public static final String DEVICE_ID_COL = "id";
-    public static final String DEVICE_NAME_COL = "name";
-    public static final String DEVICE_DESC_COL = "description";
-    public static final String DEVICE_STATUS_COL = "status";
 
+    @Getter(onMethod_ = @DynamoDbPartitionKey)
     private String id;
     private String name;
     private String description;

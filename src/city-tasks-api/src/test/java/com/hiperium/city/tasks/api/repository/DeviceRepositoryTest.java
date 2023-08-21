@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbAsyncTable;
 
 import java.time.Duration;
 
@@ -36,7 +36,7 @@ class DeviceRepositoryTest extends AbstractContainerBaseTest {
     private DeviceRepository deviceRepository;
 
     @Autowired
-    private DynamoDbAsyncClient dynamoDbAsyncClient;
+    private DynamoDbAsyncTable<Device> dynamoDbAsyncTable;
 
     private static Task task;
 
@@ -50,7 +50,8 @@ class DeviceRepositoryTest extends AbstractContainerBaseTest {
     @Order(1)
     @DisplayName("Wait for DynamoDB to be ready")
     void givenDevicesTable_whenCreated_mustNotThrownError() {
-        TestsUtil.verifyIfTableIsCreated(this.dynamoDbAsyncClient);
+        TestsUtil.waitForTableToBecomeActive(this.dynamoDbAsyncTable);
+        Assertions.assertTrue(true);
     }
 
     @Test
@@ -73,16 +74,16 @@ class DeviceRepositoryTest extends AbstractContainerBaseTest {
     @Order(3)
     @DisplayName("Find not existing Device ID")
     void givenDeviceId_whenFindById_mustThrowException() {
-        Mono<Device> deviceMonoResponse = this.deviceRepository.findById("1000");
+        Mono<Device> deviceMonoResponse = this.deviceRepository.findById("10000");
         StepVerifier.create(deviceMonoResponse)
-                .expectError(ResourceNotFoundException.class)
+                .expectErrorMatches(throwable -> throwable instanceof ResourceNotFoundException)
                 .verify();
     }
 
     @Test
     @Order(4)
     @DisplayName("Turn Device OFF")
-    void givenDeviceItem_whenTaskTurnedOff_mustUpdateDeviceStatus() throws InterruptedException {
+    void givenDeviceItem_whenTaskTurnedOff_mustUpdateDeviceStatus() {
         task.setDeviceOperation(EnumDeviceOperation.DEACTIVATE);
         Mono<Task> deviceUpdateResponse = this.deviceRepository.updateStatusByTaskOperation(task);
         StepVerifier.create(deviceUpdateResponse)
@@ -108,7 +109,7 @@ class DeviceRepositoryTest extends AbstractContainerBaseTest {
     @Test
     @Order(5)
     @DisplayName("Turn Device ON")
-    void givenDeviceItem_whenTaskTurnedOn_mustUpdateDeviceStatus() throws InterruptedException {
+    void givenDeviceItem_whenTaskTurnedOn_mustUpdateDeviceStatus() {
         task.setDeviceOperation(EnumDeviceOperation.ACTIVATE);
         Mono<Task> deviceUpdateResponse = this.deviceRepository.updateStatusByTaskOperation(task);
         StepVerifier.create(deviceUpdateResponse)
@@ -140,7 +141,7 @@ class DeviceRepositoryTest extends AbstractContainerBaseTest {
     @Order(6)
     @DisplayName("Update not existing Device ID")
     void givenDeviceItem_whenUpdate_mustThrowException() {
-        task.setDeviceId("100");
+        task.setDeviceId("10000");
         Mono<Task> deviceMonoResponse = this.deviceRepository.updateStatusByTaskOperation(task);
         StepVerifier.create(deviceMonoResponse)
                 .expectErrorMatches(throwable -> throwable instanceof ResourceNotFoundException)
