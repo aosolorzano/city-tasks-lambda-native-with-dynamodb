@@ -1,13 +1,13 @@
 package com.hiperium.city.tasks.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.hiperium.city.tasks.api.config.hints.HibernateProxyHints;
-import com.hiperium.city.tasks.api.config.hints.QuartzHints;
-import com.hiperium.city.tasks.api.config.hints.ResourceBundleHints;
+import com.hiperium.city.tasks.api.configurations.hints.HibernateProxyHints;
+import com.hiperium.city.tasks.api.configurations.hints.QuartzHints;
+import com.hiperium.city.tasks.api.configurations.hints.ResourceBundleHints;
 import com.hiperium.city.tasks.api.dto.ErrorDetailsDTO;
 import com.hiperium.city.tasks.api.dto.TaskExecutionDTO;
-import com.hiperium.city.tasks.api.execution.JobExecution;
-import com.hiperium.city.tasks.api.utils.PropertiesLoaderUtil;
+import com.hiperium.city.tasks.api.executions.JobExecution;
+import com.hiperium.city.tasks.api.utils.PropertiesUtil;
 import com.hiperium.city.tasks.api.vo.AuroraSecretsVO;
 import com.hiperium.city.tasks.api.vo.AwsPropertiesVO;
 import lombok.SneakyThrows;
@@ -38,7 +38,7 @@ public class TasksApplication {
 
     @SneakyThrows(JsonProcessingException.class)
     public static void main(String[] args) {
-        PropertiesLoaderUtil.loadProperties();
+        PropertiesUtil.setApplicationProperties();
         SpringApplication.run(TasksApplication.class, args);
     }
 

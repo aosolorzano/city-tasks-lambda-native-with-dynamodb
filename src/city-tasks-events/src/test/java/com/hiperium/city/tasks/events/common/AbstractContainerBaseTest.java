@@ -1,12 +1,13 @@
 package com.hiperium.city.tasks.events.common;
 
-import com.hiperium.city.tasks.events.utils.FunctionUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.hiperium.city.tasks.events.utils.FunctionsUtil;
+import com.hiperium.city.tasks.events.utils.PropertiesUtil;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
 
-@Slf4j
 public abstract class AbstractContainerBaseTest {
 
     protected static final LocalStackContainer LOCALSTACK_CONTAINER;
@@ -23,11 +24,14 @@ public abstract class AbstractContainerBaseTest {
                 .withCopyToContainer(MountableFile.forClasspathResource("data-setup.json"),
                         "/var/lib/localstack/events-data.json");
         LOCALSTACK_CONTAINER.start();
+    }
 
-        System.setProperty("aws.region", LOCALSTACK_CONTAINER.getRegion());
-        System.setProperty("aws.accessKeyId", LOCALSTACK_CONTAINER.getAccessKey());
-        System.setProperty("aws.secretAccessKey", LOCALSTACK_CONTAINER.getSecretKey());
-        System.setProperty(FunctionUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY,
+    @DynamicPropertySource
+    public static void dynamicPropertySource(DynamicPropertyRegistry registry) {
+        registry.add("aws.region", LOCALSTACK_CONTAINER::getRegion);
+        registry.add("aws.accessKeyId", LOCALSTACK_CONTAINER::getAccessKey);
+        registry.add("aws.secretAccessKey", LOCALSTACK_CONTAINER::getSecretKey);
+        registry.add(PropertiesUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY, () ->
                 LOCALSTACK_CONTAINER.getEndpoint().toString());
     }
 }

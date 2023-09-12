@@ -48,7 +48,7 @@ To build and deploy your application for the first time, run the following in yo
 ```bash
 $ sam build
 $ sam deploy            \
-  --config-env 'dev'    \
+  --configurations-env 'dev'    \
   --disable-rollback    \
   --profile dev
 ```

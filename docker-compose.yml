@@ -5,7 +5,7 @@ services:
     image: localstack/localstack:latest
     container_name: tasks-localstack
     ports:
-      - "127.0.0.1:4566:4566"
+      - "4566:4566"
     env_file:
       #  https://docs.localstack.cloud/references/configuration/
       - ./utils/docker/env/localstack-dev.env

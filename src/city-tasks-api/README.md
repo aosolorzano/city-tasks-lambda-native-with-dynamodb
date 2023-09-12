@@ -1,36 +1,40 @@
 ## city-tasks-api
 
-This project contains source code and supporting files for a containerized application that you can deploy with the Copilot CLI. It includes the following files and folders.
+This project contains source code
+and supports files for a containerized application
+that you can deploy with the Copilot CLI. It includes the following files and folders.
 
-- src/main                     - Code for the container application.
-- src/test                     - Integration tests for the application code.
-- src/main/resources           - Spring Boot configuration files.
+- src/main              Code for the container application.
+- src/test              Integration tests for the application code.
+- src/main/resources    Spring Boot configuration files.
 
 This application manages Quartz Jobs with the help of Spring Webflux and Spring Native.
 
-### Running Locally using Docker Compose.
 
-If you want to use tha Spring Boot Native version of the Tasks API service, you need to update the `docker-compose.yml` file and change the `src/city-tasks-api/Dockerfile` property value to `src/city-tasks-api/Dockerfile-native` in the `tasks-api` service.
+### Running using Docker Compose and LocalStack.
 
-*IMPORTANT:* The GraalVM `native-image` compiler should be installed and configured on your machine.
-*IMPORTANT:* If you're experiencing JMV memory issues, execute the following commands to increase the JVM memory and execute Maven with more CPU cores:
+If you want to use tha Spring Boot Native version of the Tasks API service, you need to update the `docker-compose.yml` file 
+and change the `src/city-tasks-api/Dockerfile` property value to `src/city-tasks-api/Dockerfile-native` in the `tasks-api` service.
+
+*IMPORTANT:* The GraalVM `native-image` compiler should be installed and configured on your machine. 
+If you're experiencing JMV memory issues, execute the following commands to increase the JVM memory and execute Maven with more CPU cores:
 
 ```bash
 export _JAVA_OPTIONS="-Xmx8g -Xms4g"
-mvn -T 2C clean native:compile -Pnative -DskipTests -f src/city-tasks-api/pom.xml -Ddependency-check.skip=true
+mvn -T 4C clean native:compile -Pnative -DskipTests -f src/city-tasks-api/pom.xml -Ddependency-check.skip=true
 ```
 
-Use the Hiperium login command to authenticate with the AWS IAM Identity Center with the name of your IdP profile:
+Use the Hiperium Login command to authenticate with your AWS IAM Identity Center with the name of your IdP profile:
 ```bash
 hiperium-login
 ```
 
-Then, execute the main shell script and select option `1. Docker Compose.` to build and run the project locally using Docker Compose.
+Then, execute the main a shell script selecting option `1. Docker Compose.` to build and deploy the project locally using Docker Compose.
 ```bash
 ./run-scripts.sh
 ```
 
-Open a new terminal tab and edit your `/etc/hosts` file adding a new entry point to access the Hiperium Tasks API using HTTPS:
+Open a new terminal tab and edit your `/etc/hosts` file adding a new entry point to access the API service using HTTPS:
 ```bash
 vim /etc/hosts
 ```
@@ -40,16 +44,50 @@ Add the following line and save the file:
 127.0.0.1 dev.hiperium.cloud
 ```
 
-Open your Postman and import the collection `Hiperium.postman_collection.json` to test the API endpoints. First, add a new Quartz Job using the `POST /api/v1/jobs` endpoint and then, execute the `POST /api/v1/tasks` endpoint using a near execution date time.
+Open your Postman and import the collection `Hiperium.postman_collection.json` to test the API endpoints. 
+First, add a new Quartz Job using the `POST /api/v1/jobs` endpoint and then, execute the `POST /api/v1/tasks` endpoint using a near execution date time.
 Notice when the Task is executed by the Quartz Scheduler, you must see the logs in the docker compose terminal window.
 
-### Running Integration Tests in a Native Image.
 
+### Running Integration Tests against Native Image.
 You can also run your existing tests suite in a native image.
 This is an efficient way to validate the compatibility of your application:
 ```bash
 mvn -T 2C test -PnativeTest -f src/city-tasks-api/pom.xml
 ```
+
+
+### Generate Lightweight Container with the Cloud Native Buildpacks
+If you're already familiar with Spring Boot container images support, this is the easiest way to get started.
+Docker should be installed and configured on your machine prior to creating the image.
+
+To create the image, run the following goal:
+```bash
+$ ./mvnw spring-boot:build-image -Pnative -DskipTests
+```
+
+Then, you can run the app like any other container:
+```bash
+$ docker run --rm city-tasks-api:1.7.0
+```
+
+
+### Generate Native Executable with the Native Build Tools
+Use this option if you want to explore more options such as running your tests in a native image.
+The GraalVM `native-image` compiler should be installed and configured on your machine.
+
+**NOTE:** GraalVM 22.3+ is required.
+
+To create the executable, run the following goal:
+```bash
+$ ./mvnw native:compile -Pnative -DskipTests
+```
+
+Then, you can run the app as follows:
+```bash
+$ target/city-tasks-api
+```
+
 
 ### AWS Copilot CLI Helpful Commands.
 
@@ -92,6 +130,7 @@ copilot svc logs        \
     --since 1h          \
     --follow
 ```
+
 Start an interactive bash session with a task part of the service:
 ```bash
 copilot svc exec        \
@@ -99,51 +138,10 @@ copilot svc exec        \
     --name api          \
     --env dev
 ```
+
 To delete and clean-up all created resources.
 ```bash
 copilot app delete --yes
-```
-
-### GraalVM Native Support
-This project has been configured to let you generate either a lightweight container or a native executable.
-It is also possible to run your tests in a native image.
-
-### Lightweight Container with Cloud Native Buildpacks
-If you're already familiar with Spring Boot container images support, this is the easiest way to get started.
-Docker should be installed and configured on your machine prior to creating the image.
-
-To create the image, run the following goal:
-```bash
-$ ./mvnw spring-boot:build-image -Pnative -DskipTests
-```
-
-Then, you can run the app like any other container:
-```bash
-$ docker run --rm city-tasks-api:1.7.0
-```
-
-### Executable with Native Build Tools
-Use this option if you want to explore more options such as running your tests in a native image.
-The GraalVM `native-image` compiler should be installed and configured on your machine.
-
-**NOTE:** GraalVM 22.3+ is required.
-
-To create the executable, run the following goal:
-```bash
-$ ./mvnw native:compile -Pnative -DskipTests
-```
-
-Then, you can run the app as follows:
-```bash
-$ target/city-tasks-api
-```
-
-You can also run your existing tests suite in a native image.
-This is an efficient way to validate the compatibility of your application.
-
-To run your existing tests in a native image, run the following goal:
-```bash
-$ ./mvnw test -PnativeTest
 ```
 
 ### Reference Documentation

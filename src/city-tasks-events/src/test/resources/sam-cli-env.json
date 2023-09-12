@@ -1,0 +1,5 @@
+{
+  "CityTasksEventsFunction": {
+    "AWS_ENDPOINT_URL": "http://host.docker.internal:4566"
+  }
+}

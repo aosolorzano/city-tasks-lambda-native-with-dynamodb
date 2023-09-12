@@ -1,5 +1,5 @@
 -- In your Quartz properties file, you'll need to set 
--- org.scheduler.jobStore.driverDelegateClass = org.scheduler.impl.jdbcjobstore.PostgreSQLDelegate
+-- org.schedulers.jobStore.driverDelegateClass = org.schedulers.impl.jdbcjobstore.PostgreSQLDelegate
 
 DROP TABLE IF EXISTS QRTZ_FIRED_TRIGGERS;
 DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;
