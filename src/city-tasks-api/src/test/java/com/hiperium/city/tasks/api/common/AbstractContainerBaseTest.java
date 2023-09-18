@@ -28,12 +28,12 @@ public abstract class AbstractContainerBaseTest {
         KEYCLOAK_CONTAINER = new KeycloakContainer()
                 .withRealmImportFile("keycloak-realm.json");
 
-        POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:latest")
+        POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:14.4")
                 .withUsername("postgres")
                 .withPassword("postgres123")
                 .withDatabaseName("CityTasksDB");
 
-        LOCALSTACK_CONTAINER = new LocalStackContainer(DockerImageName.parse("localstack/localstack:latest"))
+        LOCALSTACK_CONTAINER = new LocalStackContainer(DockerImageName.parse("localstack/localstack:2.2.0"))
                 .withServices(LocalStackContainer.Service.DYNAMODB)
                 .withCopyToContainer(MountableFile.forClasspathResource("infra-setup.sh"),
                         "/etc/localstack/init/ready.d/api-setup.sh")

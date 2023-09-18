@@ -49,7 +49,7 @@ The internal project documentation is divided into the following directories:
 
 The following documentation is available:
 - [Tasks API with Copilot CLI](src/city-tasks-api/README.md).
-- [Tasks Event with SAM CLI](src/city-tasks-events/README.md).
+- [Tasks Event with SAM CLI](src/city-tasks-events-function/README.md).
 
 ### Deployment Options.
 You need to execute the following command from the project's root directory:

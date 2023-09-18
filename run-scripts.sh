@@ -140,7 +140,7 @@ menu() {
     *************************************
     ************* Main Menu *************
     *************************************
-    1) Docker Compose.
+    1) Deploy Locally.
     2) Deploy Backend into AWS.
     3) Delete Backend from AWS.
     -------------------------------------
@@ -185,4 +185,3 @@ menu() {
 #### Main function ####
 verifyEnvironmentVariables
 menu
-

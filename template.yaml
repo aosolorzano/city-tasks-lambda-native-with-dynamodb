@@ -13,6 +13,25 @@ Globals:
 Resources:
   CityTasksEventsFunction:
     Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: city-tasks-events-function
+      CodeUri: src/city-tasks-events-function
+      Handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+      Events:
+        TaskExecutionEvent:
+          Type: EventBridgeRule
+          Properties:
+            Pattern:
+              source:
+                - com.hiperium.city.tasks.api
+              detail-type:
+                - TaskExecution
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      Environment:
+        Variables:
+          CITY_TASKS_TIME_ZONE: "-05:00"
+          JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
     Connectors:
       EventsTableConnector:
         Properties:
@@ -21,27 +40,6 @@ Resources:
             Arn: !GetAtt CityTasksEventsTable.Arn
           Permissions:
             - Write
-    Properties:
-      FunctionName: city-tasks-events-function
-      CodeUri: src/city-tasks-events
-      Handler: org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
-      Events:
-        TaskExecutionEvent:
-          Type: EventBridgeRule
-          Properties:
-            Pattern:
-              source:
-                - com.hiperium.city.tasks
-              detail-type:
-                - TaskExecution
-      Policies:
-        - CloudWatchFullAccess
-        - AWSLambdaBasicExecutionRole
-      Environment:
-        Variables:
-          CITY_TASKS_TIME_ZONE: "-05:00"
-          JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
-          AWS_ENDPOINT_OVERRIDE: ""
     Metadata:
       BuildMethod: makefile
 

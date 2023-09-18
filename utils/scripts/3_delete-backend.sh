@@ -51,10 +51,10 @@ echo "DONE!"
 
 echo ""
 echo "DELETING SAM APPLICATION FROM AWS..."
-sam delete                                                \
-  --stack-name city-tasks-events-"$AWS_WORKLOADS_ENV"     \
-  --config-env "$AWS_WORKLOADS_ENV"                       \
-  --no-prompts                                            \
+sam delete                                                      \
+  --stack-name city-tasks-events-function-"$AWS_WORKLOADS_ENV"  \
+  --config-env "$AWS_WORKLOADS_ENV"                             \
+  --no-prompts                                                  \
   --profile "$AWS_WORKLOADS_PROFILE"
 rm -rf "$WORKING_DIR"/.aws-sam
 

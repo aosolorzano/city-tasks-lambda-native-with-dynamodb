@@ -86,14 +86,7 @@ sed -i'.bak' -e "s/workloads_aws_region/$workloads_aws_region/g; s/workloads_aws
 rm -f "$WORKING_DIR"/copilot/environments/"$AWS_WORKLOADS_ENV"/manifest.yml.bak
 
 ### UPDATING ENVOY CONFIGURATION FILE FOR AWS
-cat "$WORKING_DIR"/utils/templates/docker/envoy/envoy-aws.yaml > "$WORKING_DIR"/src/city-tasks-proxy/envoy.yaml
-echo ""
-echo "DONE!"
-
-echo ""
-echo "GENERATING DOCKER BUILDER IMAGE FOR LAMBDA FUNCTION..."
-echo ""
-docker build -t al2-graalvm:maven -f src/city-tasks-events/Dockerfile .
+cat "$WORKING_DIR"/utils/templates/docker/envoy/envoy-aws.yaml > "$WORKING_DIR"/src/city-tasks-api-proxy/envoy.yaml
 echo ""
 echo "DONE!"
 
@@ -103,9 +96,9 @@ sam build --config-env "$AWS_WORKLOADS_ENV"
 
 echo ""
 echo "DEPLOYING SAM PROJECT INTO AWS..."
-sam deploy                            \
-  --config-env "$AWS_WORKLOADS_ENV"   \
-  --disable-rollback                  \
+sam deploy                                \
+  --config-env "$AWS_WORKLOADS_ENV"       \
+  --disable-rollback                      \
   --profile "$AWS_WORKLOADS_PROFILE"
 
 echo ""

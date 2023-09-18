@@ -1,8 +1,0 @@
-#!/bin/sh
-
-cd "${LAMBDA_TASK_ROOT:-.}" || {
-  echo "Failed to change directory to LAMBDA_TASK_ROOT: ${LAMBDA_TASK_ROOT:-.}"
-  exit 1
-};
-
-./native "$_HANDLER"

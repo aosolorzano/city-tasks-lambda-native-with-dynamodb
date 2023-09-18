@@ -1,28 +1,21 @@
 #####################################################################################
-########################## Stage 1: Docker Builder Image ############################
+############################# Stage 1: Builder Image ################################
 #####################################################################################
-FROM amazoncorretto:17.0.8-al2023 AS builder
-WORKDIR /workspace/app
-COPY mvnw                              mvnw
-COPY .mvn                              .mvn
-COPY pom.xml                           pom.xml
-COPY src/city-tasks-api/pom.xml        src/city-tasks-api/pom.xml
-RUN ./mvnw dependency:go-offline -B -f src/city-tasks-api/pom.xml
-COPY src/city-tasks-api/src            src/city-tasks-api/src
+FROM hiperium/native-image-builder AS builder
 
-RUN ./mvnw clean package -DskipTests -f src/city-tasks-api/pom.xml
-RUN mkdir -p src/city-tasks-api/target/dependency && \
-    (cd src/city-tasks-api/target/dependency; jar -xf ../city-tasks-api-*.jar)
+COPY pom.xml                        pom.xml
+COPY src/city-tasks-api/pom.xml     src/city-tasks-api/pom.xml
+RUN mvn dependency:go-offline -B -f src/city-tasks-api/pom.xml
+COPY src/city-tasks-api/src         src/city-tasks-api/src
+
+RUN mvn -T 4C clean native:compile -Pnative -DskipTests -f src/city-tasks-api/pom.xml -Ddependency-check.skip=true
 
 #####################################################################################
-######################## Stage 2: Docker Application Image ##########################
+######################### Stage 2: Native Application Image #########################
+###### https://github.com/oracle/container-images/pkgs/container/oraclelinux ########
 #####################################################################################
-FROM amazoncorretto:17.0.8-al2023-headless
-VOLUME /tmp
-ARG DEPENDENCY=/workspace/app/src/city-tasks-api/target/dependency
-COPY --from=builder ${DEPENDENCY}/BOOT-INF/classes    /app
-COPY --from=builder ${DEPENDENCY}/BOOT-INF/lib        /app/lib
-COPY --from=builder ${DEPENDENCY}/META-INF            /app/META-INF
+FROM oraclelinux:9-slim
+COPY --from=builder /workspace/src/city-tasks-api/target/city-tasks-api application
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-cp", "app:app/lib/*", "com.hiperium.city.tasks.api.TasksApplication"]
+CMD ["sh", "-c", "./application"]

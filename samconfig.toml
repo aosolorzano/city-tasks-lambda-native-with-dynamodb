@@ -4,8 +4,8 @@ version = 0.1
 
 [dev]
 [dev.global.parameters]
-stack_name = "city-tasks-events-dev"
+stack_name = "city-tasks-events-function-dev"
 
 [dev.build.parameters]
-build_image = ["al2-graalvm:maven"]
+build_image = ["hiperium/native-image-builder"]
 use_container = true

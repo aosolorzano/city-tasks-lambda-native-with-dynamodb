@@ -35,18 +35,10 @@ case $response in
     ;;
 esac
 
-### GENERATE LAMBDA FUNCTION JAR
-echo ""
-echo "GENERATING LAMBDA FUNCTION JAR FILE..."
-echo ""
-./mvnw clean package -DskipTests -f src/city-tasks-events/pom.xml
-echo ""
-echo "DONE!"
-
 ### UPDATE ENVOY CONFIGURATION FILE WITH SERVER FQDN
-sed -i'.bak' -e "s/server_fqdn/$server_fqdn/g;" \
-      "$WORKING_DIR"/src/city-tasks-proxy/envoy.yaml
-rm -f "$WORKING_DIR"/src/city-tasks-proxy/envoy.yaml.bak
+sed -i'.bak' -e "s/server_fqdn/$server_fqdn/g;"   \
+      "$WORKING_DIR"/src/city-tasks-api-proxy/envoy.yaml
+rm -f "$WORKING_DIR"/src/city-tasks-api-proxy/envoy.yaml.bak
 
 echo ""
 echo "GETTING INFORMATION FROM AWS. PLEASE WAIT..."

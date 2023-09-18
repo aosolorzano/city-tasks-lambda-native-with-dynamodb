@@ -54,7 +54,7 @@ sidecars:
     image:
       build:
         context: .
-        dockerfile: ./src/city-tasks-proxy/Dockerfile
+        dockerfile: ./src/city-tasks-api-proxy/Dockerfile
     variables:
       ENVOY_UID: 0
 

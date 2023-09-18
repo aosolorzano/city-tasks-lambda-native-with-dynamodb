@@ -31,7 +31,7 @@
 
     <modules>
         <module>src/city-tasks-api</module>
-        <module>src/city-tasks-events</module>
+        <module>src/city-tasks-events-function</module>
     </modules>
 
     <dependencyManagement>

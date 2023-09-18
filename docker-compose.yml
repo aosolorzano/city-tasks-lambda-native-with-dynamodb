@@ -1,27 +1,12 @@
 version: '3.9'
-
 services:
-  tasks-localstack:
-    image: localstack/localstack:latest
-    container_name: tasks-localstack
-    ports:
-      - "4566:4566"
-    env_file:
-      #  https://docs.localstack.cloud/references/configuration/
-      - ./utils/docker/env/localstack-dev.env
-    volumes:
-      # CITY TASKS API RESOURCES
-      - ./src/city-tasks-api/src/test/resources/infra-setup.sh:/etc/localstack/init/ready.d/api-setup.sh
-      - ./src/city-tasks-api/src/test/resources/data-setup.json:/var/lib/localstack/api-data.json
-      # CITY TASKS EVENTS RESOURCES
-      - ./src/city-tasks-events/src/test/resources/infra-setup.sh:/etc/localstack/init/ready.d/events-setup.sh
-      - ./src/city-tasks-events/src/test/resources/data-setup.json:/var/lib/localstack/events-data.json
-      - ./src/city-tasks-events/target/city-tasks-events-1.7.0.jar:/var/lib/localstack/city-tasks-events.jar
-      # CITY TASKS COMMON RESOURCES
-      - ./utils/docker/localstack/common-infra-setup.sh:/etc/localstack/init/ready.d/common-setup.sh
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - hiperium-network
+
+  tasks-builder:
+    image: hiperium/native-image-builder
+    container_name: tasks-builder
+    build:
+      context: .
+      dockerfile: utils/docker/sam-builder/Dockerfile
 
   tasks-postgres:
     image: postgres:14.4
@@ -32,39 +17,87 @@ services:
       - POSTGRES_DB=CityTasksDB
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres123
+    depends_on:
+      - tasks-builder
+    networks:
+      - hiperium-network
+
+  tasks-api-proxy:
+    image: aosolorzano/city-tasks-api-proxy:1.7.0
+    container_name: tasks-api-proxy
+    build:
+      context: .
+      dockerfile: src/city-tasks-api-proxy/Dockerfile
+      args:
+        envoy_env: dev
+    ports:
+      - "443:443"
+    depends_on:
+      - tasks-postgres
     networks:
       - hiperium-network
 
   tasks-api:
     image: aosolorzano/city-tasks-api:1.7.0
     container_name: tasks-api
-    ports:
-      - "8080:8080"
-    depends_on:
-      - tasks-postgres
     build:
       context: .
       dockerfile: src/city-tasks-api/Dockerfile
+    ports:
+      - "8080:8080"
     env_file:
       - ./utils/docker/env/tasks-api-dev.env
+    depends_on:
+      - tasks-api-proxy
     networks:
       - hiperium-network
 
-  tasks-proxy:
-    image: aosolorzano/city-tasks-proxy:1.7.0
-    container_name: tasks-proxy
-    ports:
-      - "443:443"
-    depends_on:
-      - tasks-api
+  tasks-events-function:
+    image: aosolorzano/city-tasks-events-function:1.7.0
+    container_name: tasks-events-function
     build:
       context: .
-      dockerfile: src/city-tasks-proxy/Dockerfile
-      args:
-        envoy_env: dev
+      dockerfile: src/city-tasks-events-function/Dockerfile
+    ports:
+      - "9000:8080"
+    env_file:
+      - ./utils/docker/env/tasks-events-dev.env
+    volumes:
+      - tasks-shared-data:/workspace/apps
+    depends_on:
+      - tasks-api
+    networks:
+      - hiperium-network
+
+  tasks-localstack:
+    image: localstack/localstack:2.2.0
+    container_name: tasks-localstack
+    ports:
+      - "4566:4566"
+    env_file:
+      - ./utils/docker/env/localstack-dev.env  #  https://docs.localstack.cloud/references/configuration/
+    volumes:
+      # COMMON RESOURCES
+      - /var/run/docker.sock:/var/run/docker.sock
+      - tasks-shared-data:/workspace/apps
+      - ./utils/docker/localstack/common-infra-setup.sh:/etc/localstack/init/ready.d/1_common-infra-setup.sh
+      # API RESOURCES
+      - ./src/city-tasks-api/src/test/resources/infra-setup.sh:/etc/localstack/init/ready.d/2_api-setup.sh
+      - ./src/city-tasks-api/src/test/resources/data-setup.json:/var/lib/localstack/api-data.json
+      # EVENTS RESOURCES
+      - ./src/city-tasks-events-function/src/test/resources/infra-setup.sh:/etc/localstack/init/ready.d/3_events-setup.sh
+      - ./src/city-tasks-events-function/src/test/resources/lambda-setup.sh:/etc/localstack/init/ready.d/4_events-lambda-setup.sh
+      - ./src/city-tasks-events-function/src/test/resources/data-setup.json:/var/lib/localstack/events-data.json
+      # COMMON PERMISSIONS
+      - ./utils/docker/localstack/common-infra-permissions.sh:/etc/localstack/init/ready.d/5_common-infra-permissions.sh
+    depends_on:
+      - tasks-events-function
     networks:
       - hiperium-network
 
 networks:
   hiperium-network:
     driver: bridge
+
+volumes:
+    tasks-shared-data:
