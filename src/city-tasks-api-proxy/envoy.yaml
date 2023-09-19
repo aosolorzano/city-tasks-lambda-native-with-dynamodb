@@ -56,7 +56,7 @@ static_resources:
                   virtual_hosts:
                     - name: default
                       domains:
-                        - "server_fqdn"
+                        - "dev.hiperium.cloud"
                       routes:
                         - match: { prefix: "/" }
                           route:
