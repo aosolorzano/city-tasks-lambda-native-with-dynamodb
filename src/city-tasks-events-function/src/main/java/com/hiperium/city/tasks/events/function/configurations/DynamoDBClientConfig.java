@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
-import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.net.URI;
 import java.util.Objects;
@@ -23,13 +23,13 @@ public class DynamoDBClientConfig {
     }
 
     @Bean
-    public DynamoDbAsyncClient dynamoDbAsyncClient() {
-        var builder = DynamoDbAsyncClient.builder()
+    public DynamoDbClient dynamoDbClient() {
+        var builder = DynamoDbClient.builder()
                 .region(DefaultAwsRegionProviderChain.builder().build().getRegion())
                 .credentialsProvider(DefaultCredentialsProvider.builder().build());
         String endpointOverrideURL = this.environment.getProperty(PropertiesUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY);
+        log.debug("DynamoDB Endpoint Override: {}", endpointOverrideURL);
         if (Objects.nonNull(endpointOverrideURL) && !endpointOverrideURL.isBlank()) {
-            log.debug("DynamoDB Endpoint Override: {}", endpointOverrideURL);
             builder.endpointOverride(URI.create(endpointOverrideURL));
         }
         return builder.build();

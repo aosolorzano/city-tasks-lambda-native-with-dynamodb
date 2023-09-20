@@ -1,4 +1,4 @@
-## city-tasks-api
+## Hiperium City Tasks API
 
 This project contains source code
 and supports files for a containerized application
@@ -88,6 +88,13 @@ Then, you can run the app as follows:
 $ target/city-tasks-api
 ```
 
+### Getting Device items from DynamoDB on LocalStack.
+Execute the following command:
+```bash
+aws dynamodb scan                           \
+  --table-name Devices                      \
+  --endpoint-url http://localhost:4566
+```
 
 ### AWS Copilot CLI Helpful Commands.
 

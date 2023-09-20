@@ -44,6 +44,13 @@ case $response in
 esac
 
 echo ""
+echo "GENERATING DOCKER BUILDER IMAGE FOR LAMBDA FUNCTION..."
+echo ""
+docker build -t hiperium/native-image-builder -f utils/docker/sam-builder/Dockerfile .
+echo ""
+echo "DONE!"
+
+echo ""
 echo "GETTING INFORMATION FROM AWS. PLEASE WAIT..."
 
 ### GETTING CSR CERTIFICATE ARN
@@ -89,6 +96,16 @@ rm -f "$WORKING_DIR"/copilot/environments/"$AWS_WORKLOADS_ENV"/manifest.yml.bak
 cat "$WORKING_DIR"/utils/templates/docker/envoy/envoy-aws.yaml > "$WORKING_DIR"/src/city-tasks-api-proxy/envoy.yaml
 echo ""
 echo "DONE!"
+
+echo ""
+echo "INITIALIZING SAM PROJECT ON AWS..."
+sam init                        \
+  --runtime 'provided.al2'      \
+  --architecture 'arm64'        \
+  --dependency-manager 'maven'  \
+  --no-tracing                  \
+  --no-application-insights     \
+  --no-beta-features
 
 echo ""
 echo "BUILDING SAM PROJECT..."
@@ -172,8 +189,8 @@ if [ "$AWS_WORKLOADS_ENV" == "dev" ]; then
   echo ""
   echo "WRITING DEVICE TESTING DATA INTO DYNAMODB..."
   aws dynamodb batch-write-item \
-        --request-items file://"$WORKING_DIR"/utils/aws/dynamodb/devices-test-data.json \
-        --profile "$AWS_WORKLOADS_PROFILE"
+      --request-items file://"$WORKING_DIR"/utils/aws/dynamodb/devices-test-data.json \
+      --profile "$AWS_WORKLOADS_PROFILE"
   echo "DONE!"
 fi
 

@@ -10,9 +10,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import software.amazon.awssdk.core.SdkBytes;
-import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.DescribeTableRequest;
-import software.amazon.awssdk.services.dynamodb.model.DescribeTableResponse;
 import software.amazon.awssdk.services.dynamodb.model.TableStatus;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.GetFunctionConfigurationRequest;
@@ -27,28 +26,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestsUtil {
 
-    public static void waitForTableToBecomeActive(final DynamoDbAsyncClient dynamoDbAsyncClient) {
+    public static void waitForTableToBecomeActive(final DynamoDbClient dynamoDbClient) {
         Awaitility.await()
                 .atMost(Duration.ofSeconds(10))         // maximum wait time
                 .pollInterval(Duration.ofSeconds(1))    // check every second
                 .until(() -> {
-                    CompletableFuture<DescribeTableResponse> future = dynamoDbAsyncClient
-                            .describeTable(DescribeTableRequest
-                                    .builder()
-                                    .tableName(Event.TABLE_NAME)
-                                    .build());
-                    try {
-                        return TableStatus.ACTIVE.equals(future.get().table().tableStatus());
-                    } catch (InterruptedException | ExecutionException e) {
-                        return false;
-                    }
+                    DescribeTableRequest request = DescribeTableRequest.builder()
+                            .tableName(Event.TABLE_NAME)
+                            .build();
+                    TableStatus tableStatus = dynamoDbClient.describeTable(request).table().tableStatus();
+                    return TableStatus.ACTIVE.equals(tableStatus);
                 });
     }
 

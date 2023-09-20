@@ -7,5 +7,20 @@ version = 0.1
 stack_name = "city-tasks-events-function-dev"
 
 [dev.build.parameters]
-build_image = ["hiperium/native-image-builder"]
+cached = false
 use_container = true
+build_image = ["hiperium/native-image-builder"]
+
+[dev.validate.parameters]
+lint = true
+
+[dev.package.parameters]
+resolve_s3 = true
+
+[dev.deploy.parameters]
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
+resolve_s3 = true
+
+[dev.sync.parameters]
+watch = true

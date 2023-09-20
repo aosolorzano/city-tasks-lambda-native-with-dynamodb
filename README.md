@@ -5,7 +5,7 @@
 * **Level**: Advanced.
 * **Technologies**: Java 17, Spring Boot 3, Spring Cloud 4, Spring Native, Spring WebFlux, Spring OAuth2, Quartz, Flyway, Lombok, Testcontainers, LocalStack, AWS Copilot CLI, AWS SAM-CLI, Amazon Cognito, Amazon Aurora (with PostgreSQL), DynamoDB, Application Load Balancer, EventBridge, Lambda, and Docker.
 
-![](utils/docs/images/solutions_architecture_v5.png)
+![](utils/images/solutions_architecture_v5.png)
 
 You can read the following articles from my **Medium.com** account to get more project details:
 
@@ -43,6 +43,21 @@ The project is divided into the following directories:
 - **pom.xml**: Contains the project's dependencies.
 - **utils**: Contains the scripts to deploy the application locally or in AWS.
 
+### Deployment Options.
+You need to execute the following command from the project's root directory:
+```bash
+./run-scripts.sh
+```
+
+The script will ask you for the required AWS profiles to deploy the application locally or in AWS:
+![](utils/images/bash_script_entering_variables.png)
+
+Then, the script shows a main menu with the following options:
+![](utils/images/bash_script_main_menu.png)
+
+If you choose option 'h' for 'Helper Menu,'
+you can create/deploy dependent resources required before deploying the application on AWS.
+
 ### Internal Documentation.
 The internal project documentation is divided into the following directories:
 - **utils/docs**: Contains the project's documentation.
@@ -51,25 +66,3 @@ The internal project documentation is divided into the following directories:
 The markdown documentation for individual projects is available at:
 - [Tasks API with Copilot CLI](src/city-tasks-api/README.md).
 - [Tasks Event with SAM CLI](src/city-tasks-events-function/README.md).
-
-### Deployment Options.
-You need to execute the following command from the project's root directory:
-```bash
-./run-scripts.sh
-```
-
-The script will ask you for the required AWS profiles to deploy the application locally or in AWS:
-![](utils/docs/images/bash_script_entering_variables.png)
-
-Then, the script shows a main menu with the following options:
-![](utils/docs/images/bash_script_main_menu.png)
-
-Please go to 'Helper menu' to create the dependent resources before deploying the application:
-
-### Getting Device items from DynamoDB on LocalStack.
-Execute the following command:
-```bash
-aws dynamodb scan                           \
-  --table-name Devices                      \
-  --endpoint-url http://localhost:4566
-```

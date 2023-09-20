@@ -17,7 +17,7 @@ import org.springframework.cloud.function.context.FunctionCatalog;
 import org.springframework.cloud.function.context.test.FunctionalSpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,13 +37,13 @@ class EventsFunctionApplicationTest extends AbstractContainerBaseTest {
     private FunctionCatalog catalog;
 
     @Autowired
-    private DynamoDbAsyncClient dynamoDbAsyncClient;
+    private DynamoDbClient dynamoDbClient;
 
     @Test
     @Order(1)
     @DisplayName("Wait for DynamoDB to be ready")
     void givenDynamoDbTable_whenCreated_mustNotThrownError() {
-        TestsUtil.waitForTableToBecomeActive(this.dynamoDbAsyncClient);
+        TestsUtil.waitForTableToBecomeActive(this.dynamoDbClient);
         assertTrue(true);
     }
 

@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
-import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.*;
 
@@ -38,7 +38,7 @@ class EventsFunctionApplicationITest extends AbstractContainerBaseTest {
     public static final String FUNCTION_NAME = "city-tasks-events-function";
 
     @Autowired
-    private DynamoDbAsyncClient dynamoDbAsyncClient;
+    private DynamoDbClient dynamoDbClient;
 
     private static LambdaClient lambdaClient;
 
@@ -62,7 +62,7 @@ class EventsFunctionApplicationITest extends AbstractContainerBaseTest {
     @Order(1)
     @DisplayName("Wait for DynamoDB to be ready")
     void givenEventsTable_whenCreated_mustNotThrownError() {
-        TestsUtil.waitForTableToBecomeActive(this.dynamoDbAsyncClient);
+        TestsUtil.waitForTableToBecomeActive(this.dynamoDbClient);
         assertTrue(true);
     }
 

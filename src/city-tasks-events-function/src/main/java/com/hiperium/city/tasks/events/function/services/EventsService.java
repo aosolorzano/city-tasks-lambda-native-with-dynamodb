@@ -8,7 +8,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
@@ -19,13 +19,13 @@ import java.util.UUID;
 @Service
 public class EventsService {
 
-    private final DynamoDbAsyncClient dynamoDbAsyncClient;
+    private final DynamoDbClient dynamoDbClient;
 
     @Setter(onMethod_ = @Autowired)
     private EventMapper eventMapper;
 
-    public EventsService(DynamoDbAsyncClient dynamoDbAsyncClient) {
-        this.dynamoDbAsyncClient = dynamoDbAsyncClient;
+    public EventsService(DynamoDbClient dynamoDbClient) {
+        this.dynamoDbClient = dynamoDbClient;
     }
 
     public void createEvent(TaskEventDetail eventDetail) {
@@ -43,6 +43,6 @@ public class EventsService {
                 )
                 .tableName(Event.TABLE_NAME)
                 .build();
-        this.dynamoDbAsyncClient.putItem(putItemRequest);
+        this.dynamoDbClient.putItem(putItemRequest);
     }
 }
