@@ -85,6 +85,13 @@ $ sam local invoke CityTasksEventsFunction      \
   --events src/city-tasks-events-function/src/test/resources/events/lambda-event-valid-detail.json
 ```
 
+### Getting Device items from DynamoDB on LocalStack.
+Execute the following command:
+```bash
+awslocal dynamodb scan --table-name Events
+```
+
+### SAM CLI and APIs.
 The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
 
 ```bash

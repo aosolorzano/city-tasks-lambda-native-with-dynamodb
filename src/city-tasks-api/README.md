@@ -91,9 +91,7 @@ $ target/city-tasks-api
 ### Getting Device items from DynamoDB on LocalStack.
 Execute the following command:
 ```bash
-aws dynamodb scan                           \
-  --table-name Devices                      \
-  --endpoint-url http://localhost:4566
+awslocal dynamodb scan --table-name Devices
 ```
 
 ### AWS Copilot CLI Helpful Commands.

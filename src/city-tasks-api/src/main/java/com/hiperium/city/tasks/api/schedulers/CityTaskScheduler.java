@@ -3,6 +3,7 @@ package com.hiperium.city.tasks.api.schedulers;
 import com.hiperium.city.tasks.api.exceptions.ResourceNotFoundException;
 import com.hiperium.city.tasks.api.exceptions.TaskSchedulerException;
 import com.hiperium.city.tasks.api.models.Task;
+import com.hiperium.city.tasks.api.utils.PropertiesUtil;
 import com.hiperium.city.tasks.api.utils.SchedulersUtil;
 import com.hiperium.city.tasks.api.utils.enums.EnumResourceError;
 import com.hiperium.city.tasks.api.utils.enums.EnumSchedulerError;
@@ -20,7 +21,7 @@ public class CityTaskScheduler {
 
     private final Scheduler scheduler;
 
-    @Value("${city.tasks.time.zone}")
+    @Value("${" + PropertiesUtil.TIME_ZONE_ID_PROPERTY + "}")
     private String timeZone;
 
     public CityTaskScheduler(Scheduler scheduler) {

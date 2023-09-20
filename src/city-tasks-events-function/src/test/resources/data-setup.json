@@ -4,19 +4,16 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "00001"
+            "S": "a0ecb466-7ef5-47bf-a1ca-12f9f9328528"
           },
           "deviceId": {
             "S": "123"
           },
           "taskId": {
-            "N": "1001"
+            "N": "101"
           },
-          "deviceOperation": {
+          "operation": {
             "S": "DEACTIVATE"
-          },
-          "executionDateTime": {
-            "N": "1001"
           }
         }
       }
@@ -25,19 +22,16 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "00002"
+            "S": "bd253af4-af36-4d3c-ae05-5b9098fcbbb0"
           },
           "deviceId": {
             "S": "456"
           },
           "taskId": {
-            "N": "1002"
+            "N": "102"
           },
-          "deviceOperation": {
+          "operation": {
             "S": "ACTIVATE"
-          },
-          "executionDateTime": {
-            "N": "1001"
           }
         }
       }
@@ -46,19 +40,16 @@
       "PutRequest": {
         "Item": {
           "id": {
-            "S": "00003"
+            "S": "74b71424-3a00-4a55-acf7-4812771f720d"
           },
           "deviceId": {
             "S": "456"
           },
           "taskId": {
-            "N": "1002"
+            "N": "102"
           },
-          "deviceOperation": {
+          "operation": {
             "S": "DEACTIVATE"
-          },
-          "executionDateTime": {
-            "N": "1001"
           }
         }
       }

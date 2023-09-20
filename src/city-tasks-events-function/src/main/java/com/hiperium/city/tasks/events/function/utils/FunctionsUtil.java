@@ -2,7 +2,7 @@ package com.hiperium.city.tasks.events.function.utils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hiperium.city.tasks.events.function.models.EventBridgeResponse;
+import com.hiperium.city.tasks.events.function.models.EventsResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -33,8 +33,8 @@ public final class FunctionsUtil {
         }
     }
 
-    public static EventBridgeResponse getSuccessResponse() {
-        return EventBridgeResponse.builder()
+    public static EventsResponse getSuccessResponse() {
+        return EventsResponse.builder()
                 .statusCode(201)
                 .headers(HEADERS)
                 .body("{}")

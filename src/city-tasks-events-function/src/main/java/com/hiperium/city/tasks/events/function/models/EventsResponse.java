@@ -11,7 +11,7 @@ import java.util.Map;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventBridgeResponse {
+public class EventsResponse {
 
     private int statusCode;
     private Map<String, String> headers;

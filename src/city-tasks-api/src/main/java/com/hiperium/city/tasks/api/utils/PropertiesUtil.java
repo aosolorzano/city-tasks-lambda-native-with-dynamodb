@@ -14,13 +14,14 @@ import java.util.Objects;
 public final class PropertiesUtil {
 
     public static final String AWS_ENDPOINT_OVERRIDE_PROPERTY = "aws.endpoint-override";
+    public static final String TIME_ZONE_ID_PROPERTY = "city.tasks.time.zone.id";
 
     private static final String JDBC_SQL_CONNECTION = "jdbc:postgresql://{0}:{1}/{2}";
 
     public static void setApplicationProperties() throws JsonProcessingException {
         setDatasourceConnection();
         setIdentityProviderEndpoint();
-        setApplicationTimeZone();
+        setApplicationTimeZoneId();
         setAwsEndpointOverride();
     }
 
@@ -49,11 +50,11 @@ public final class PropertiesUtil {
         }
     }
 
-    private static void setApplicationTimeZone() {
-        String timeZoneId = EnvironmentUtil.getTimeZone();
+    private static void setApplicationTimeZoneId() {
+        String timeZoneId = EnvironmentUtil.getTimeZoneId();
         if (Objects.nonNull(timeZoneId) && !timeZoneId.isBlank()) {
-            log.debug("Time Zone: {}", timeZoneId);
-            System.setProperty("city.tasks.time.zone", timeZoneId);
+            log.debug("Time Zone ID: {}", timeZoneId);
+            System.setProperty(TIME_ZONE_ID_PROPERTY, timeZoneId);
         }
     }
 

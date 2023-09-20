@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.ToString;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Data
-public class EventBridgeEvent {
+public class EventBridgeCustomEvent {
 
     @NotEmpty
     private String version;
@@ -28,7 +28,8 @@ public class EventBridgeEvent {
     @NotEmpty
     private String region;
 
-    private Date time;
+    @NotNull
+    private Instant time;
 
     private List<String> resources;
 

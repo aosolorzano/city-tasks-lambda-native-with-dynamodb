@@ -1,6 +1,6 @@
 package com.hiperium.city.tasks.events.function.utils;
 
-import com.hiperium.city.tasks.events.function.models.EventBridgeEvent;
+import com.hiperium.city.tasks.events.function.models.EventBridgeCustomEvent;
 import com.hiperium.city.tasks.events.function.models.TaskEventDetail;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ValidationException;
@@ -16,10 +16,10 @@ import static jakarta.validation.Validation.buildDefaultValidatorFactory;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BeansValidationUtil {
 
-    public static void validateBean(EventBridgeEvent customEvent) {
+    public static void validateBean(EventBridgeCustomEvent customEvent) {
         try (ValidatorFactory factory = buildDefaultValidatorFactory()) {
             Validator validator = factory.getValidator();
-            Set<ConstraintViolation<EventBridgeEvent>> violations = validator.validate(customEvent);
+            Set<ConstraintViolation<EventBridgeCustomEvent>> violations = validator.validate(customEvent);
             if (!violations.isEmpty()) {
                 violations.stream()
                         .findFirst()
@@ -40,7 +40,7 @@ public final class BeansValidationUtil {
         }
     }
 
-    private static void throwValidationTaskDtoException(ConstraintViolation<EventBridgeEvent> constraintViolation) {
+    private static void throwValidationTaskDtoException(ConstraintViolation<EventBridgeCustomEvent> constraintViolation) {
         throw new ValidationException(constraintViolation.getMessage());
     }
 

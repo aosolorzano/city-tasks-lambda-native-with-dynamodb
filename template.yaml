@@ -47,7 +47,7 @@ Resources:
             TableName: !Ref CityTasksEventsTable
       Environment:
         Variables:
-          CITY_TASKS_TIME_ZONE: "-05:00"
+          CITY_TASKS_TIME_ZONE_ID: "-05:00"
           JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
     Metadata:
       BuildMethod: makefile

@@ -2,8 +2,8 @@ package com.hiperium.city.tasks.events.function;
 
 import com.hiperium.city.tasks.events.function.common.AbstractContainerBaseTest;
 import com.hiperium.city.tasks.events.function.functions.CreateEventFunction;
-import com.hiperium.city.tasks.events.function.models.EventBridgeEvent;
-import com.hiperium.city.tasks.events.function.models.EventBridgeResponse;
+import com.hiperium.city.tasks.events.function.models.EventBridgeCustomEvent;
+import com.hiperium.city.tasks.events.function.models.EventsResponse;
 import com.hiperium.city.tasks.events.function.utils.FunctionsUtil;
 import com.hiperium.city.tasks.events.function.utils.TestsUtil;
 import jakarta.validation.ValidationException;
@@ -51,10 +51,10 @@ class EventsFunctionApplicationTest extends AbstractContainerBaseTest {
     @Order(2)
     @DisplayName("Valid event")
     void givenValidEvent_whenInvokeLambdaFunction_thenExecuteSuccessfully() throws IOException {
-        Function<EventBridgeEvent, EventBridgeResponse> function = this.getFunction();
+        Function<EventBridgeCustomEvent, EventsResponse> function = this.getFunction();
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("events/lambda-event-valid-detail.json")) {
             assert inputStream != null;
-            EventBridgeEvent event = FunctionsUtil.unmarshal(inputStream.readAllBytes(), EventBridgeEvent.class);
+            EventBridgeCustomEvent event = FunctionsUtil.unmarshal(inputStream.readAllBytes(), EventBridgeCustomEvent.class);
             assertThat(function.apply(event)).has(new Condition<>(response -> response.getStatusCode() == 201, "Status code must be 201"));
         }
     }
@@ -66,17 +66,17 @@ class EventsFunctionApplicationTest extends AbstractContainerBaseTest {
             "events/lambda-event-invalid-detail.json",
             "events/lambda-event-without-detail.json"})
     void givenInvalidEvents_whenInvokeLambdaFunction_thenThrowsException(String jsonFilePath) throws IOException {
-        Function<EventBridgeEvent, EventBridgeResponse> function = this.getFunction();
+        Function<EventBridgeCustomEvent, EventsResponse> function = this.getFunction();
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(jsonFilePath)) {
             assert inputStream != null;
-            EventBridgeEvent event = FunctionsUtil.unmarshal(inputStream.readAllBytes(), EventBridgeEvent.class);
+            EventBridgeCustomEvent event = FunctionsUtil.unmarshal(inputStream.readAllBytes(), EventBridgeCustomEvent.class);
             assertThrows(ValidationException.class, () -> function.apply(event));
         }
     }
 
     @NotNull
-    private Function<EventBridgeEvent, EventBridgeResponse> getFunction() {
-        Function<EventBridgeEvent, EventBridgeResponse> function = this.catalog.lookup(Function.class,
+    private Function<EventBridgeCustomEvent, EventsResponse> getFunction() {
+        Function<EventBridgeCustomEvent, EventsResponse> function = this.catalog.lookup(Function.class,
                 CreateEventFunction.class.getCanonicalName());
         assertNotNull(function, "Function not found.");
         return function;

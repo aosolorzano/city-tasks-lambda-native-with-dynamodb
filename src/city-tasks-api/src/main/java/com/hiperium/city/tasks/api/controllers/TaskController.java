@@ -32,7 +32,7 @@ public class TaskController {
     @Setter(onMethod = @__({@Autowired}))
     private TaskMapper taskMapper;
 
-    @Value("${city.tasks.time.zone}")
+    @Value("${city.tasks.time.zone.id}")
     private String zoneId;
 
     public TaskController(TaskService taskService) {

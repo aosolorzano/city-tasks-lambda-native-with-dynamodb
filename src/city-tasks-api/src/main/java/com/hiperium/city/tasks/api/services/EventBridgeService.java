@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hiperium.city.tasks.api.dto.TaskExecutionDTO;
 import com.hiperium.city.tasks.api.models.Task;
+import com.hiperium.city.tasks.api.utils.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class EventBridgeService {
     public static final String EVENT_SOURCE_TYPE = "TaskExecution";
     private final EventBridgeAsyncClient eventBridgeAsyncClient;
 
-    @Value("${city.tasks.time.zone}")
-    private static String timeZone;
+    @Value("${" + PropertiesUtil.TIME_ZONE_ID_PROPERTY + "}")
+    private static String zoneId;
 
     public EventBridgeService(EventBridgeAsyncClient eventBridgeAsyncClient) {
         this.eventBridgeAsyncClient = eventBridgeAsyncClient;
@@ -63,7 +64,7 @@ public class EventBridgeService {
 
     private static PutEventsRequestEntry createRequestEntry(ObjectMapper objectMapper, TaskExecutionDTO taskExecutionDto) {
         PutEventsRequestEntry entry;
-        ZonedDateTime actualZonedDateTime = ZonedDateTime.now(ZoneId.of(timeZone));
+        ZonedDateTime actualZonedDateTime = ZonedDateTime.now(ZoneId.of(zoneId));
         try {
             entry = PutEventsRequestEntry.builder()
                     .source(EVENT_SOURCE_NAME)

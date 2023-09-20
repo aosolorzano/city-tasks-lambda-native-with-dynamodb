@@ -69,7 +69,7 @@ network:
 
 # Environment Variables.
 variables:
-  CITY_TASKS_TIME_ZONE: -05:00
+  CITY_TASKS_TIME_ZONE_ID: -05:00
   CITY_IDP_ENDPOINT: https://cognito-idp.idp_aws_region.amazonaws.com/cognito_user_pool_id
 
 # Override any value above based on the deployment environment.

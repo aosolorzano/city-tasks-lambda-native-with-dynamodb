@@ -6,6 +6,7 @@ import com.hiperium.city.tasks.api.exceptions.ResourceNotFoundException;
 import com.hiperium.city.tasks.api.exceptions.TaskSchedulerException;
 import com.hiperium.city.tasks.api.exceptions.ValidationException;
 import com.hiperium.city.tasks.api.utils.ErrorsUtil;
+import com.hiperium.city.tasks.api.utils.PropertiesUtil;
 import com.hiperium.city.tasks.api.utils.enums.EnumValidationError;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
 
-    @Value("${city.tasks.time.zone}")
+    @Value("${" + PropertiesUtil.TIME_ZONE_ID_PROPERTY + "}")
     private String timeZone;
 
     public GlobalExceptionHandler(MessageSource messageSource) {

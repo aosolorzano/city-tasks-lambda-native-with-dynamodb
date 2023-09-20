@@ -13,10 +13,13 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnvironmentUtil {
 
+    public static final String TIME_ZONE_ID_ENV_VARIABLE = "CITY_TASKS_TIME_ZONE_ID";
+    public static final String AWS_ENDPOINT_OVERRIDE_ENV_VARIABLE = "AWS_ENDPOINT_OVERRIDE";
+
     public static AuroraSecretsVO getAuroraSecretVO() throws JsonProcessingException {
         String auroraSecret = System.getenv("CITY_TASKS_DB_CLUSTER_SECRET");
         if (Objects.isNull(auroraSecret) || auroraSecret.isBlank()) {
-            log.warn("CITY_TASKS_DB_CLUSTER_SECRET not found. Using defaults.");
+            log.warn("CITY_TASKS_DB_CLUSTER_SECRET variable was not found. Using defaults.");
             return null;
         }
         return new ObjectMapper().readValue(auroraSecret, AuroraSecretsVO.class);
@@ -25,24 +28,25 @@ public final class EnvironmentUtil {
     public static String getIdpEndpoint() {
         String idpEndpoint = System.getenv("CITY_IDP_ENDPOINT");
         if (Objects.isNull(idpEndpoint) || idpEndpoint.isBlank()) {
-            log.warn("CITY_IDP_ENDPOINT not found. Using defaults.");
+            log.warn("CITY_IDP_ENDPOINT variable was not found. Using defaults.");
         }
         return idpEndpoint;
     }
 
-    public static String getTimeZone() {
-        String timeZoneId = System.getenv("CITY_TASKS_TIME_ZONE");
+    public static String getTimeZoneId() {
+        String timeZoneId = System.getenv(TIME_ZONE_ID_ENV_VARIABLE);
         if (Objects.isNull(timeZoneId) || timeZoneId.isBlank()) {
-            log.warn("CITY_TASKS_TIME_ZONE not found. Using defaults.");
+            log.warn("{} variable was not found. Using defaults.", TIME_ZONE_ID_ENV_VARIABLE);
         }
         return timeZoneId;
     }
 
     public static String getAwsEndpointOverrideURL() {
-        String endpointOverrideURL = System.getenv("AWS_ENDPOINT_OVERRIDE");
+        String endpointOverrideURL = System.getenv(AWS_ENDPOINT_OVERRIDE_ENV_VARIABLE);
         if (Objects.nonNull(endpointOverrideURL) && !endpointOverrideURL.isBlank()) {
             log.warn("AWS Endpoint Override URL detected. This will override the default AWS endpoint URL. " +
-                    "Set the 'AWS_ENDPOINT_OVERRIDE' variable to null or empty if you want to use the default AWS endpoint.");
+                    "Set the '{}' variable to null or empty if you want to use the default AWS endpoint.",
+                    AWS_ENDPOINT_OVERRIDE_ENV_VARIABLE);
         } else {
             String awsEndpointURL = System.getenv("AWS_ENDPOINT_URL");
             if (Objects.nonNull(awsEndpointURL) && !awsEndpointURL.isEmpty() && !awsEndpointURL.endsWith(".amazonaws.com")) {

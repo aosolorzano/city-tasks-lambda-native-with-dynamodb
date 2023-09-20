@@ -11,17 +11,18 @@ import java.util.Objects;
 public final class PropertiesUtil {
 
     public static final String AWS_ENDPOINT_OVERRIDE_PROPERTY = "aws.endpoint-override";
+    public static final String TIME_ZONE_ID_PROPERTY = "city.tasks.time.zone.id";
 
     public static void setApplicationProperties() {
-        setApplicationTimeZone();
+        setApplicationTimeZoneId();
         setAwsEndpointOverride();
     }
 
-    private static void setApplicationTimeZone() {
-        String timeZoneId = EnvironmentUtil.getTimeZone();
+    private static void setApplicationTimeZoneId() {
+        String timeZoneId = EnvironmentUtil.getTimeZoneId();
         if (Objects.nonNull(timeZoneId) && !timeZoneId.isBlank()) {
-            log.debug("Time Zone: {}", timeZoneId);
-            System.setProperty("city.tasks.time.zone", timeZoneId);
+            log.debug("Time Zone ID: {}", timeZoneId);
+            System.setProperty(TIME_ZONE_ID_PROPERTY, timeZoneId);
         }
     }
 

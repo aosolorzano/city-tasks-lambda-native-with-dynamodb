@@ -2,11 +2,12 @@ package com.hiperium.city.tasks.events.function.services;
 
 import com.hiperium.city.tasks.events.function.mappers.EventMapper;
 import com.hiperium.city.tasks.events.function.models.Event;
-import com.hiperium.city.tasks.events.function.models.TaskEventDetail;
+import com.hiperium.city.tasks.events.function.models.EventBridgeCustomEvent;
 import com.hiperium.city.tasks.events.function.utils.BeansValidationUtil;
+import com.hiperium.city.tasks.events.function.utils.PropertiesUtil;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
@@ -15,7 +16,6 @@ import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 import java.util.Map;
 import java.util.UUID;
 
-@Slf4j
 @Service
 public class EventsService {
 
@@ -24,22 +24,26 @@ public class EventsService {
     @Setter(onMethod_ = @Autowired)
     private EventMapper eventMapper;
 
+    @Value("${" + PropertiesUtil.TIME_ZONE_ID_PROPERTY + "}")
+    private String zoneId;
+
     public EventsService(DynamoDbClient dynamoDbClient) {
         this.dynamoDbClient = dynamoDbClient;
     }
 
-    public void createEvent(TaskEventDetail eventDetail) {
-        log.debug("createEvent(): {}", eventDetail);
-        BeansValidationUtil.validateBean(eventDetail);
+    public void createEvent(EventBridgeCustomEvent eventBridgeCustomEvent) {
+        BeansValidationUtil.validateBean(eventBridgeCustomEvent.getDetail());
 
-        Event event = this.eventMapper.fromTaskEventDetail(eventDetail);
-        event.setId(UUID.randomUUID().toString());
+        Event event = this.eventMapper.fromCustomEvent(eventBridgeCustomEvent, this.zoneId);
         var putItemRequest = PutItemRequest.builder()
                 .item(
-                        Map.of(Event.ID_FIELD, AttributeValue.fromS(event.getId()),
-                                Event.DEVICE_ID_FIELD, AttributeValue.fromS(event.getDeviceId()),
-                                Event.TASK_ID_FIELD, AttributeValue.fromN(event.getTaskId().toString()),
-                                Event.DEVICE_OPERATION_FIELD, AttributeValue.fromS(event.getDeviceOperation().name()))
+                        Map.of(Event.ID_FIELD, AttributeValue.fromS(UUID.randomUUID().toString()),
+                                Event.DEVICE_ID_FIELD, AttributeValue.fromS(eventBridgeCustomEvent.getDetail().getDeviceId()),
+                                Event.TASK_ID_FIELD, AttributeValue.fromN(eventBridgeCustomEvent.getDetail().getTaskId().toString()),
+                                Event.OPERATION_FIELD, AttributeValue.fromS(eventBridgeCustomEvent.getDetail().getDeviceOperation().name()),
+                                Event.EXECUTION_DATE_FIELD, AttributeValue.fromS(event.getExecutionDate()),
+                                Event.EXECUTION_INSTANT_FIELD, AttributeValue.fromN(event.getExecutionInstant().toString())
+                        )
                 )
                 .tableName(Event.TABLE_NAME)
                 .build();
