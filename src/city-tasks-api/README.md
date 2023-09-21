@@ -11,7 +11,7 @@ that you can deploy with the Copilot CLI. It includes the following files and fo
 This application manages Quartz Jobs with the help of Spring Webflux and Spring Native.
 
 
-### Running using Docker Compose and LocalStack.
+## Running using Docker Compose and LocalStack.
 If you want to use tha Spring Boot Native version of the Tasks API service, you need to update the `docker-compose.yml` file 
 and change the `src/city-tasks-api/Dockerfile` property value to `src/city-tasks-api/Dockerfile` in the `tasks-api` service.
 
@@ -48,7 +48,7 @@ First, add a new Quartz Job using the `POST /api/v1/jobs` endpoint and then, exe
 Notice when the Task is executed by the Quartz Scheduler, you must see the logs in the docker compose terminal window.
 
 
-### Running Integration Tests against Native Image.
+## Running Integration Tests against Native Image.
 You can also run your existing tests suite in a native image.
 This is an efficient way to validate the compatibility of your application:
 ```bash
@@ -56,7 +56,7 @@ mvn -T 2C test -PnativeTest -f src/city-tasks-api/pom.xml
 ```
 
 
-### Generate Lightweight Container with the Cloud Native Buildpacks
+## Generate Lightweight Container with the Cloud Native Buildpacks
 If you're already familiar with Spring Boot container images support, this is the easiest way to get started.
 Docker should be installed and configured on your machine prior to creating the image.
 
@@ -70,7 +70,7 @@ Then, you can run the app like any other container:
 $ docker run --rm city-tasks-api:1.7.0
 ```
 
-### Generate Native Executable with the Native Build Tools
+## Generate Native Executable with the Native Build Tools
 Use this option if you want to explore more options such as running your tests in a native image.
 The GraalVM `native-image` compiler should be installed and configured on your machine.
 
@@ -86,44 +86,45 @@ Then, you can run the app as follows:
 $ target/city-tasks-api
 ```
 
-### Getting Device items from DynamoDB on LocalStack.
+## Getting Device items from DynamoDB on LocalStack.
 Execute the following command:
 ```bash
 awslocal dynamodb scan --table-name Devices
 ```
 
-### AWS Copilot CLI Helpful Commands.
-List all of your AWS Copilot applications.
+## AWS Copilot CLI Helpful Commands.
+
+* List all of your AWS Copilot applications.
 ```bash
 copilot app ls
 ```
 
-Show information about the environments and services in your application.
+* Show information about the environments and services in your application.
 ```bash
 copilot app show
 ```
 
-Show information about your environments.
+* Show information about your environments.
 ```bash
 copilot env ls
 ```
 
-List of all the services in an application.
+* List of all the services in an application.
 ```bash
 copilot svc ls
 ```
 
-Show service status.
+* Show service status.
 ```bash
 copilot svc status
 ```
 
-Show information about the service, including endpoints, capacity and related resources.
+* Show information about the service, including endpoints, capacity and related resources.
 ```bash
 copilot svc show
 ```
 
-Show logs of a deployed service.
+* Show logs of a deployed service.
 ```bash
 export AWS_PROFILE=tasks-dep-dev
 copilot svc logs          \
@@ -134,7 +135,7 @@ copilot svc logs          \
     --follow
 ```
 
-Start an interactive bash session with a task part of the service:
+* Start an interactive bash session with a task part of the service:
 ```bash
 copilot svc exec        \
     --app city-tasks    \
@@ -142,12 +143,12 @@ copilot svc exec        \
     --env dev
 ```
 
-To delete and clean-up all created resources.
+* Delete and clean-up all created resources.
 ```bash
 copilot app delete --yes
 ```
 
-### Reference Documentation
+## Reference Documentation
 For further reference, please consider the following sections:
 
 * [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
@@ -165,7 +166,7 @@ For further reference, please consider the following sections:
 * [Validation](https://docs.spring.io/spring-boot/docs/3.1.1/reference/htmlsingle/#io.validation)
 * [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/3.1.1/reference/htmlsingle/#actuator)
 
-### Guides
+## Guides
 The following guides illustrate how to use some features concretely:
 
 * [Building a Reactive RESTful Web Service](https://spring.io/guides/gs/reactive-rest-service/)
@@ -173,7 +174,7 @@ The following guides illustrate how to use some features concretely:
 * [Validation](https://spring.io/guides/gs/validating-form-input/)
 * [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
 
-### Additional Links
+## Additional Links
 These additional references should also help you:
 
 * [Configure AOT settings in Build Plugin](https://docs.spring.io/spring-boot/docs/3.1.1/maven-plugin/reference/htmlsingle/#aot)
