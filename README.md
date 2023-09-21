@@ -14,7 +14,7 @@ You can read the following articles from my **Medium.com** account to get more p
 3. [Deploying Spring Boot Native microservice using Cross-Account deployment](https://aosolorzano.medium.com/spring-boot-native-microservice-on-ecs-fargate-using-aws-copilot-cli-for-cross-account-deployment-73b1836f21f7).
 4. [End-to-End Encryption using TLS ECDSA certificate and ACM with Copilot CLI](https://aosolorzano.medium.com/end-to-end-encryption-using-tls-ecdsa-certificate-acm-and-aws-copilot-cli-64f5daafe977).
 5. [EDA using Amazon EventBridge, Lambda, and SAM-CLI, with Fargate ECS as Event Source](https://aosolorzano.medium.com/eda-with-eventbridge-and-lambda-using-sam-cli-with-spring-boot-ms-on-fargate-ecs-as-event-source-9abee237be08).
-6. Storing EDA events in DynamoDB from a Native Lambda Function using GraalVM and Spring Cloud Functions.
+6. [Storing EDA events in DynamoDB from a Native Lambda Function using Spring Cloud Functions](https://aosolorzano.medium.com/storing-eda-events-in-dynamodb-using-a-native-lambda-function-with-graalvm-spring-cloud-functions-c32cee4775fc).
 
 ### Description.
 This project uses Spring Boot to manage Quartz Jobs with the help of Spring Webflux and Spring Native.

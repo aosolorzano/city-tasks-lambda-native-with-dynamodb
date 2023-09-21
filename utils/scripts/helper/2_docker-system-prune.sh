@@ -4,7 +4,9 @@ echo ""
 echo "PRUNING DOCKER SYSTEM..."
 echo ""
 docker system prune --all --force --volumes
-docker rm -f "$(docker ps -aq)"
+
+### REMOVING ALL EXITED CONTAINERS
+docker rm "$(docker ps -a -f status=exited -q)"
 
 echo ""
 echo "DONE!"

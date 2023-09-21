@@ -6,7 +6,7 @@ cd "$WORKING_DIR" || {
   exit 1
 }
 
-read -r -p 'Do you want to Create a new <S3 Bucket> to store ALB logs? [y/N] ' create_s3_bucket
+read -r -p 'Do you want a new <S3 Bucket> to store ALB logs? [y/N] ' create_s3_bucket
 if [ "$create_s3_bucket" == "Y" ] || [ "$create_s3_bucket" == "y" ] || [ "$create_s3_bucket" == "yes" ]; then
   read -r -p 'Please, enter the <Bucket> name: ' s3_bucket_name
   if [ -z "$s3_bucket_name" ]; then
