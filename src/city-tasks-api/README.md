@@ -4,15 +4,14 @@ This project contains source code
 and supports files for a containerized application
 that you can deploy with the Copilot CLI. It includes the following files and folders.
 
-- src/main              Code for the container application.
-- src/test              Integration tests for the application code.
-- src/main/resources    Spring Boot configuration files.
+- src/main - Code for the container application.
+- src/test - Integration tests for the application code.
+- src/main/resources - Spring Boot configuration files.
 
 This application manages Quartz Jobs with the help of Spring Webflux and Spring Native.
 
 
 ### Running using Docker Compose and LocalStack.
-
 If you want to use tha Spring Boot Native version of the Tasks API service, you need to update the `docker-compose.yml` file 
 and change the `src/city-tasks-api/Dockerfile` property value to `src/city-tasks-api/Dockerfile` in the `tasks-api` service.
 
@@ -71,7 +70,6 @@ Then, you can run the app like any other container:
 $ docker run --rm city-tasks-api:1.7.0
 ```
 
-
 ### Generate Native Executable with the Native Build Tools
 Use this option if you want to explore more options such as running your tests in a native image.
 The GraalVM `native-image` compiler should be installed and configured on your machine.
@@ -95,7 +93,6 @@ awslocal dynamodb scan --table-name Devices
 ```
 
 ### AWS Copilot CLI Helpful Commands.
-
 List all of your AWS Copilot applications.
 ```bash
 copilot app ls
