@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 cd "$WORKING_DIR"/utils/certs/"$AWS_WORKLOADS_ENV" || {
   echo "Error moving to the '$AWS_WORKLOADS_ENV' Certification's directory."

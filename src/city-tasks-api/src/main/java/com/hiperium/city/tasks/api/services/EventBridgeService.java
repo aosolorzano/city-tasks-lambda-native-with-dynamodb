@@ -8,30 +8,27 @@ import com.hiperium.city.tasks.api.utils.PropertiesUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.eventbridge.EventBridgeAsyncClient;
+import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
 import software.amazon.awssdk.services.eventbridge.model.PutEventsRequest;
 import software.amazon.awssdk.services.eventbridge.model.PutEventsRequestEntry;
-import software.amazon.awssdk.services.eventbridge.model.PutEventsResponse;
-import software.amazon.awssdk.services.eventbridge.model.PutEventsResultEntry;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
 public class EventBridgeService {
 
     public static final String EVENT_SOURCE_NAME = "com.hiperium.city.tasks.api";
-    public static final String EVENT_SOURCE_TYPE = "TaskExecution";
-    private final EventBridgeAsyncClient eventBridgeAsyncClient;
+    public static final String EVENT_SOURCE_TYPE = "TaskExecutionEvent";
+
+    private final EventBridgeClient eventBridgeClient;
 
     @Value("${" + PropertiesUtil.TIME_ZONE_ID_PROPERTY + "}")
-    private static String zoneId;
+    private String zoneId;
 
-    public EventBridgeService(EventBridgeAsyncClient eventBridgeAsyncClient) {
-        this.eventBridgeAsyncClient = eventBridgeAsyncClient;
+    public EventBridgeService(EventBridgeClient eventBridgeClient) {
+        this.eventBridgeClient = eventBridgeClient;
     }
 
     public void triggerEvent(final Task task) {
@@ -41,30 +38,19 @@ public class EventBridgeService {
                 .taskId(task.getId())
                 .deviceId(task.getDeviceId())
                 .deviceOperation(task.getDeviceOperation())
-                .executionDateTime(System.currentTimeMillis())
                 .build();
-        PutEventsRequestEntry entry = createRequestEntry(objectMapper, taskExecutionDTO);
+        PutEventsRequestEntry entry = this.createRequestEntry(objectMapper, taskExecutionDTO);
         PutEventsRequest eventRequest = PutEventsRequest.builder()
                 .entries(entry)
                 .build();
         log.debug("Event Request: {}", eventRequest);
 
-        CompletableFuture<PutEventsResponse> response = this.eventBridgeAsyncClient.putEvents(eventRequest);
-        response.thenAccept(resp -> {
-            for (PutEventsResultEntry resultEntry : resp.entries()) {
-                if (Objects.nonNull(resultEntry.eventId())) {
-                    log.info("Event ID: {} sent successfully to EventBridge.", resultEntry.eventId());
-                } else {
-                    log.error("Error sending events to EventBridge. Error Code: {}. Error message: {}.",
-                            resultEntry.errorCode(), resultEntry.errorMessage());
-                }
-            }
-        }).join();
+        this.eventBridgeClient.putEvents(eventRequest);
     }
 
-    private static PutEventsRequestEntry createRequestEntry(ObjectMapper objectMapper, TaskExecutionDTO taskExecutionDto) {
+    private PutEventsRequestEntry createRequestEntry(ObjectMapper objectMapper, TaskExecutionDTO taskExecutionDto) {
         PutEventsRequestEntry entry;
-        ZonedDateTime actualZonedDateTime = ZonedDateTime.now(ZoneId.of(zoneId));
+        ZonedDateTime actualZonedDateTime = ZonedDateTime.now(ZoneId.of(this.zoneId));
         try {
             entry = PutEventsRequestEntry.builder()
                     .source(EVENT_SOURCE_NAME)

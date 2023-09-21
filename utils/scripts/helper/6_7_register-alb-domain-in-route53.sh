@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 cd "$WORKING_DIR" || {
   echo "Error moving to the Project's root directory."

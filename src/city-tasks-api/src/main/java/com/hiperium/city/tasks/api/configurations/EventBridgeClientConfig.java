@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
-import software.amazon.awssdk.services.eventbridge.EventBridgeAsyncClient;
+import software.amazon.awssdk.services.eventbridge.EventBridgeClient;
 
 import java.net.URI;
 import java.util.Objects;
@@ -23,13 +23,13 @@ public class EventBridgeClientConfig {
     }
 
     @Bean
-    public EventBridgeAsyncClient eventBridgeAsyncClient() {
-        var eventBridgeClientBuilder = EventBridgeAsyncClient.builder()
+    public EventBridgeClient eventBridgeClient() {
+        var eventBridgeClientBuilder = EventBridgeClient.builder()
                 .region(DefaultAwsRegionProviderChain.builder().build().getRegion())
                 .credentialsProvider(DefaultCredentialsProvider.builder().build());
         String endpointOverrideURL = this.environment.getProperty(PropertiesUtil.AWS_ENDPOINT_OVERRIDE_PROPERTY);
+        log.debug("EventBridge Endpoint Override: {}", endpointOverrideURL);
         if (Objects.nonNull(endpointOverrideURL) && !endpointOverrideURL.isBlank()) {
-            log.debug("EventBridge Endpoint Override: {}", endpointOverrideURL);
             eventBridgeClientBuilder.endpointOverride(URI.create(endpointOverrideURL));
         }
         return eventBridgeClientBuilder.build();

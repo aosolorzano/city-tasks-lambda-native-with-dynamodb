@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 cd "$WORKING_DIR"/utils/certs || {
   echo "Error moving to the TLS-Certs directory."

@@ -14,7 +14,7 @@ This application manages Quartz Jobs with the help of Spring Webflux and Spring 
 ### Running using Docker Compose and LocalStack.
 
 If you want to use tha Spring Boot Native version of the Tasks API service, you need to update the `docker-compose.yml` file 
-and change the `src/city-tasks-api/Dockerfile` property value to `src/city-tasks-api/Dockerfile-native` in the `tasks-api` service.
+and change the `src/city-tasks-api/Dockerfile` property value to `src/city-tasks-api/Dockerfile` in the `tasks-api` service.
 
 *IMPORTANT:* The GraalVM `native-image` compiler should be installed and configured on your machine. 
 If you're experiencing JMV memory issues, execute the following commands to increase the JVM memory and execute Maven with more CPU cores:
@@ -128,11 +128,12 @@ copilot svc show
 
 Show logs of a deployed service.
 ```bash
-copilot svc logs        \
-    --app city-tasks    \
-    --name api          \
-    --env dev           \
-    --since 1h          \
+export AWS_PROFILE=tasks-dep-dev
+copilot svc logs          \
+    --app city-tasks      \
+    --name api            \
+    --env dev             \
+    --since 1h            \
     --follow
 ```
 

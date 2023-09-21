@@ -6,7 +6,7 @@
   "time": "2015-11-11T21:29:54Z",
   "region": "us-east-1",
   "resources": [],
-  "detail-type": "TaskExecution",
+  "detail-type": "TaskExecutionEvent",
   "detail": {
     "taskId": 10,
     "deviceId": "123",

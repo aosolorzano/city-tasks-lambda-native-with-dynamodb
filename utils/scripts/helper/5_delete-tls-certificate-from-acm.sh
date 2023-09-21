@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 ### READ CSR DOMAIN NAME AND CSR SERVER FQDN
 echo ""

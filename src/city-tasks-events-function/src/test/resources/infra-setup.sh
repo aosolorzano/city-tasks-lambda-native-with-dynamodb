@@ -10,8 +10,7 @@ awslocal dynamodb create-table                \
   --key-schema                                \
     AttributeName=id,KeyType=HASH             \
     AttributeName=deviceId,KeyType=RANGE      \
-  --billing-mode PAY_PER_REQUEST              \
-  --region us-east-1
+  --billing-mode PAY_PER_REQUEST
 
 echo ""
 echo "WRITING EVENTS ITEMS..."

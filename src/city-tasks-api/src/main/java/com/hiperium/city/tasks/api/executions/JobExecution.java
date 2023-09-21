@@ -36,7 +36,7 @@ public class JobExecution implements Job {
                 .doOnNext(this.eventBridgeService::triggerEvent)
                 .subscribe(
                         result -> log.info("Job executed: {}", jobId),
-                        error ->  log.error("Error executing job {}. Error: {}", jobId, error.getMessage())
+                        error ->  log.error("Error executing job '{}'. Error: {}", jobId, error.getMessage())
                 );
     }
 }

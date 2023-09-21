@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 ### VERIFY AWS PROFILE NAME
 if [ -z "$AWS_WORKLOADS_PROFILE" ]; then

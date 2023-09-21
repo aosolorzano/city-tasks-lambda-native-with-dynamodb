@@ -4,7 +4,7 @@ echo ""
 echo "CREATING EVENTBRIDGE RULE..."
 awslocal events put-rule                      \
   --name 'city-tasks-events-function-rule'    \
-  --event-pattern "{\"source\":[\"com.hiperium.city.tasks.api\"],\"detail-type\":[\"TaskExecution\"]}"
+  --event-pattern "{\"source\":[\"com.hiperium.city.tasks.api\"],\"detail-type\":[\"TaskExecutionEvent\"]}"
 
 echo ""
 echo "DONE!"

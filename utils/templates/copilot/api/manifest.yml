@@ -10,7 +10,7 @@ type: Load Balanced Web Service
 image:
   build:
     context: .
-    dockerfile: src/city-tasks-api/Dockerfile-native
+    dockerfile: src/city-tasks-api/Dockerfile
   port: 8080
 
 # ECS Task Definition.

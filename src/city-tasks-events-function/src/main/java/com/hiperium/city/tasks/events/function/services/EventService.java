@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class EventsService {
+public class EventService {
 
     private final DynamoDbClient dynamoDbClient;
 
@@ -27,7 +27,7 @@ public class EventsService {
     @Value("${" + PropertiesUtil.TIME_ZONE_ID_PROPERTY + "}")
     private String zoneId;
 
-    public EventsService(DynamoDbClient dynamoDbClient) {
+    public EventService(DynamoDbClient dynamoDbClient) {
         this.dynamoDbClient = dynamoDbClient;
     }
 

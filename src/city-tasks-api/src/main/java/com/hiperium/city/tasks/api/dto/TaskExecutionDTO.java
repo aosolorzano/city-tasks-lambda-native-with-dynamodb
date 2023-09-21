@@ -21,7 +21,4 @@ public class TaskExecutionDTO {
 
     @JsonProperty("deviceOperation")
     private EnumDeviceOperation deviceOperation;
-
-    @JsonProperty("executionDateTime")
-    private Long executionDateTime;
 }

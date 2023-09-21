@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 cd "$WORKING_DIR" || {
   echo "Error moving to the Tasks Service directory."

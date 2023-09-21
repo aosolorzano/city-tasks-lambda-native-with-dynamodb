@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 cd "$WORKING_DIR" || {
   echo "Error moving to the project's root directory."
@@ -75,7 +76,7 @@ if [ -z "$cognito_user_pool_id" ]; then
   echo ""
   echo "Error: Not Cognito User Pool ID was found with name: 'CityUserPool'."
   sh "$WORKING_DIR"/utils/scripts/helper/1_revert-automated-scripts.sh
-  exit 0
+  exit 1
 fi
 
 ### UPDATING API MANIFEST FILE WITH COGNITO USER POOL ID
@@ -96,16 +97,6 @@ rm -f "$WORKING_DIR"/copilot/environments/"$AWS_WORKLOADS_ENV"/manifest.yml.bak
 cat "$WORKING_DIR"/utils/templates/docker/envoy/envoy-aws.yaml > "$WORKING_DIR"/src/city-tasks-api-proxy/envoy.yaml
 echo ""
 echo "DONE!"
-
-echo ""
-echo "INITIALIZING SAM PROJECT ON AWS..."
-sam init                        \
-  --runtime 'provided.al2'      \
-  --architecture 'arm64'        \
-  --dependency-manager 'maven'  \
-  --no-tracing                  \
-  --no-application-insights     \
-  --no-beta-features
 
 echo ""
 echo "BUILDING SAM PROJECT..."
@@ -189,7 +180,7 @@ if [ "$AWS_WORKLOADS_ENV" == "dev" ]; then
   echo ""
   echo "WRITING DEVICE TESTING DATA INTO DYNAMODB..."
   aws dynamodb batch-write-item \
-      --request-items file://"$WORKING_DIR"/utils/aws/dynamodb/devices-test-data.json \
+      --request-items file://"$WORKING_DIR"/src/city-tasks-api/src/test/resources/data-setup.json \
       --profile "$AWS_WORKLOADS_PROFILE"
   echo "DONE!"
 fi

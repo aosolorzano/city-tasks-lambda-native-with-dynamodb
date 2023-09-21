@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 cd "$WORKING_DIR" || {
   echo "Error moving to the application's root directory."
@@ -50,7 +51,7 @@ cognito_user_pool_id=$(aws cognito-idp list-user-pools --max-results 1 --output 
 if [ -z "$cognito_user_pool_id" ]; then
   echo ""
   echo "Error: Not Cognito User Pool ID was found with name: 'CityUserPool'."
-  exit 0
+  exit 1
 fi
 
 ### UPDATING DOCKER COMPOSE ENVIRONMENT FILE
