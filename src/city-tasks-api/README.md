@@ -10,6 +10,7 @@ that you can deploy with the Copilot CLI. It includes the following files and fo
 
 This application manages Quartz Jobs with the help of Spring Webflux and Spring Native.
 
+---
 
 ## Running using Docker Compose and LocalStack.
 If you want to use tha Spring Boot Native version of the Tasks API service, you need to update the `docker-compose.yml` file 
@@ -47,6 +48,7 @@ Open your Postman and import the collection `Hiperium.postman_collection.json` t
 First, add a new Quartz Job using the `POST /api/v1/jobs` endpoint and then, execute the `POST /api/v1/tasks` endpoint using a near execution date time.
 Notice when the Task is executed by the Quartz Scheduler, you must see the logs in the docker compose terminal window.
 
+---
 
 ## Running Integration Tests against Native Image.
 You can also run your existing tests suite in a native image.
@@ -55,6 +57,7 @@ This is an efficient way to validate the compatibility of your application:
 mvn -T 2C test -PnativeTest -f src/city-tasks-api/pom.xml
 ```
 
+---
 
 ## Generate Lightweight Container with the Cloud Native Buildpacks
 If you're already familiar with Spring Boot container images support, this is the easiest way to get started.
@@ -69,6 +72,8 @@ Then, you can run the app like any other container:
 ```bash
 $ docker run --rm city-tasks-api:1.7.0
 ```
+
+---
 
 ## Generate Native Executable with the Native Build Tools
 Use this option if you want to explore more options such as running your tests in a native image.
@@ -86,11 +91,15 @@ Then, you can run the app as follows:
 $ target/city-tasks-api
 ```
 
+---
+
 ## Getting Device items from DynamoDB on LocalStack.
 Execute the following command:
 ```bash
 awslocal dynamodb scan --table-name Devices
 ```
+
+---
 
 ## AWS Copilot CLI Helpful Commands.
 
@@ -148,6 +157,8 @@ copilot svc exec        \
 copilot app delete --yes
 ```
 
+---
+
 ## Reference Documentation
 For further reference, please consider the following sections:
 
@@ -166,6 +177,8 @@ For further reference, please consider the following sections:
 * [Validation](https://docs.spring.io/spring-boot/docs/3.1.1/reference/htmlsingle/#io.validation)
 * [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/3.1.1/reference/htmlsingle/#actuator)
 
+---
+
 ## Guides
 The following guides illustrate how to use some features concretely:
 
@@ -173,6 +186,8 @@ The following guides illustrate how to use some features concretely:
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 * [Validation](https://spring.io/guides/gs/validating-form-input/)
 * [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
+
+---
 
 ## Additional Links
 These additional references should also help you:

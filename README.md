@@ -16,7 +16,9 @@ You can read the following articles from my **Medium.com** account to get more p
 5. [EDA using Amazon EventBridge, Lambda, and SAM-CLI, with Fargate ECS as Event Source](https://aosolorzano.medium.com/eda-with-eventbridge-and-lambda-using-sam-cli-with-spring-boot-ms-on-fargate-ecs-as-event-source-9abee237be08).
 6. [Storing EDA events in DynamoDB from a Native Lambda Function using Spring Cloud Functions](https://aosolorzano.medium.com/storing-eda-events-in-dynamodb-using-a-native-lambda-function-with-graalvm-spring-cloud-functions-c32cee4775fc).
 
-### Description.
+---
+
+## Description.
 This project uses Spring Boot to manage Quartz Jobs with the help of Spring Webflux and Spring Native.
 The Quartz library is configured for a clustered environment, so it needs Postgres to store and manage Jobs executions.
 When a Quartz Job is executed, the calling method retrieves the Device item associated with the Tasks and updates its state in DynamoDB.
@@ -24,7 +26,9 @@ To perform all these activities, the users must have a valid access token (JWT) 
 All test cases use TDD from the beginning of the development, and only Integration Tests are executed with the support of Testcontainers and LocalStack to try to cover real-world scenarios.
 This project also uses Docker Compose to deploy a local cluster with the required services for local testing.
 
-### Prerequisites.
+---
+
+## Prerequisites.
 - Git.
 - AWS CLI (version 2.11.+).
 - AWS Copilot CLI (version 1.27.+).
@@ -34,7 +38,9 @@ This project also uses Docker Compose to deploy a local cluster with the require
 - Spring Boot (version 3.1.+)
 - Docker and Docker Compose.
 
-### Project Structure.
+---
+
+## Project Structure.
 The project is divided into the following directories:
 - **src**: Contains source code of the required projects.
 - **copilot**: Contains the Copilot configuration files.
@@ -43,7 +49,9 @@ The project is divided into the following directories:
 - **pom.xml**: Contains the project's dependencies.
 - **utils**: Contains the scripts to deploy the application locally or in AWS.
 
-### Deployment Options.
+---
+
+## Deployment Options.
 You need to execute the following command from the project's root directory:
 ```bash
 ./run-scripts.sh
@@ -58,7 +66,9 @@ Then, the script shows a main menu with the following options:
 If you choose option 'h' for 'Helper Menu,'
 you can create/deploy dependent resources required before deploying the application on AWS.
 
-### Internal Documentation.
+---
+
+## Internal Documentation.
 The internal project documentation is divided into the following directories:
 - **utils/docs**: Contains the project's documentation.
 - **utils/docs/images**: Contains solution's architecture images.
