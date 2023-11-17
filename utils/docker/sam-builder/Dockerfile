@@ -12,16 +12,16 @@ ENV GRAAL_VERSION 22.3.3
 ENV GRAAL_FOLDERNAME graalvm-ce-${JAVA_VERSION}-${GRAAL_VERSION}
 ENV GRAAL_FILENAME graalvm-ce-${JAVA_VERSION}-linux-aarch64-${GRAAL_VERSION}.tar.gz
 RUN curl -4 -L https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAAL_VERSION}/${GRAAL_FILENAME} | tar -xvz
-RUN mv $GRAAL_FOLDERNAME /usr/lib/graalvm
-RUN rm -rf $GRAAL_FOLDERNAME
+RUN mv "$GRAAL_FOLDERNAME" /usr/lib/graalvm
+RUN rm -rf "$GRAAL_FOLDERNAME"
 
 # Verify latest version at: https://dlcdn.apache.org/maven/maven-3/
 ENV MVN_VERSION 3.9.4
 ENV MVN_FOLDERNAME apache-maven-${MVN_VERSION}
 ENV MVN_FILENAME apache-maven-${MVN_VERSION}-bin.tar.gz
 RUN curl -4 -L https://dlcdn.apache.org/maven/maven-3/${MVN_VERSION}/binaries/${MVN_FILENAME} | tar -xvz
-RUN mv $MVN_FOLDERNAME /usr/lib/maven
-RUN rm -rf $MVN_FOLDERNAME
+RUN mv "$MVN_FOLDERNAME" /usr/lib/maven
+RUN rm -rf "$MVN_FOLDERNAME"
 
 # Graal native image builder
 RUN /usr/lib/graalvm/bin/gu install native-image

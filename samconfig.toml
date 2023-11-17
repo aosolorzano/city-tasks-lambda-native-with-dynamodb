@@ -9,7 +9,7 @@ stack_name = "city-tasks-events-function-dev"
 [dev.build.parameters]
 cached = false
 use_container = true
-build_image = ["hiperium/native-image-builder"]
+build_image = ["hiperium/native-image-builder:1.7.0"]
 
 [dev.validate.parameters]
 lint = true

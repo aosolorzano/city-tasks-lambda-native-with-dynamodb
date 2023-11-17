@@ -9,7 +9,7 @@ volumes:
 
 services:
   tasks-builder:
-    image: hiperium/native-image-builder
+    image: hiperium/native-image-builder:1.7.0
     container_name: tasks-builder
     build:
       context: .

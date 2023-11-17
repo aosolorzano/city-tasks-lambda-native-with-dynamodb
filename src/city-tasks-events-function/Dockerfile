@@ -1,7 +1,7 @@
 #####################################################################################
 ############################# Stage 1: Builder Image ################################
 #####################################################################################
-FROM hiperium/native-image-builder AS builder
+FROM hiperium/native-image-builder:1.7.0 AS builder
 
 COPY pom.xml                                 pom.xml
 COPY src/city-tasks-events-function/pom.xml  src/city-tasks-events-function/pom.xml
