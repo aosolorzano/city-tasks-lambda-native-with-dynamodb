@@ -47,7 +47,7 @@ esac
 echo ""
 echo "GENERATING DOCKER BUILDER IMAGE FOR LAMBDA FUNCTION..."
 echo ""
-docker build -t hiperium/native-image-builder -f utils/docker/sam-builder/Dockerfile .
+docker build -t hiperium/native-image-builder:1.7.0 -f utils/docker/sam-builder/Dockerfile .
 echo ""
 echo "DONE!"
 

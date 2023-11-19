@@ -23,7 +23,7 @@ A docker image is required to compile for the Lambda execution environment (base
 This image can be built using the following command from the project's root directory:
 ```bash
 docker build                                \
-  -t hiperium/native-image-builder          \
+  -t hiperium/native-image-builder:1.7.0    \
   -f utils/docker/sam-builder/Dockerfile .
 ```
 

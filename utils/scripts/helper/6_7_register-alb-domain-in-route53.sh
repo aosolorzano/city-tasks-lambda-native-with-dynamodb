@@ -30,11 +30,11 @@ fi
 server_fqdn="$AWS_WORKLOADS_ENV.$server_domain_name"
 
 ### GETTING ROUTE53 AWS PROFILE
-read -r -p 'Enter the <AWS Profile> for the registration: [default] ' aws_profile
-if [ -z "$aws_workloads_profile" ]; then
+read -r -p 'Enter the <AWS Profile> for the registration: [default] ' aws_route53_profile
+if [ -z "$aws_route53_profile" ]; then
   AWS_ROUTE53_PROFILE='default'
 else
-  AWS_ROUTE53_PROFILE=$aws_profile
+  AWS_ROUTE53_PROFILE=$aws_route53_profile
 fi
 
 echo ""
@@ -44,9 +44,6 @@ echo "GETTING INFORMATION FROM AWS. PLEASE WAIT..."
 if [ "$ALB_DOMAIN_NAME" ]; then
   alb_domain_name=$ALB_DOMAIN_NAME
 else
-  if [ -z "$AWS_WORKLOADS_PROFILE" ]; then
-    AWS_WORKLOADS_PROFILE='default'
-  fi
   alb_domain_name=$(aws cloudformation describe-stacks --stack-name city-tasks-"$AWS_WORKLOADS_ENV" \
     --query "Stacks[0].Outputs[?OutputKey=='PublicLoadBalancerDNSName'].OutputValue" \
     --output text \

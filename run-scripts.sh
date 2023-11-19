@@ -24,9 +24,9 @@ function setEnvironmentVariables() {
   export AWS_WORKLOADS_PROFILE
 
   if [ -z "$AWS_PROFILE" ]; then
-    read -r -p 'Enter the <AWS Profile> for the Deployment Tools:      [default] ' aws_profile
+    read -r -p "Enter the <AWS Profile> for the Deployment Tools:      [$AWS_WORKLOADS_PROFILE] " aws_profile
     if [ -z "$aws_profile" ]; then
-      AWS_PROFILE='default'
+      AWS_PROFILE=$AWS_WORKLOADS_PROFILE
     else
       AWS_PROFILE=$aws_profile
     fi
